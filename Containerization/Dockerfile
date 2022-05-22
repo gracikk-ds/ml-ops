@@ -27,4 +27,4 @@ RUN git clone https://github.com/facebookresearch/Starspace.git && \
 
 WORKDIR /starspace/Starspace
 
-CMD ["./starspace", "train", "-trainFile", "/volumes/starspace_input_file.txt", "-model",  "/model/checkpoint"]
+CMD ./starspace train -trainFile /volumes/${input_file_name} -model /model/${output_file_name}

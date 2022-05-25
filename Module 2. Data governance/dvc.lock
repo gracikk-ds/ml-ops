@@ -49,3 +49,14 @@ stages:
     - path: reports/figures/volatile_acidity.png
       md5: c38fc4783e627f4f3ca7bee7721b9eee
       size: 13215
+  train_the_model:
+    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
+      --path_to_model_storage models/
+    deps:
+    - path: data/processed/train.csv
+      md5: 84808f9205454b9a4ec584f2786c6fc6
+      size: 286465
+    outs:
+    - path: models/finalized_model.pkl
+      md5: 2a8ea0e224ad3bfd551e008197fa513d
+      size: 42763

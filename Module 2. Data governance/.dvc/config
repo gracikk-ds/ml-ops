@@ -1,5 +1,6 @@
 [core]
     remote = storage
+    autostage = true
 ['remote "storage"']
     url = s3://ml-ops-dvc
     endpointurl = https://storage.yandexcloud.net

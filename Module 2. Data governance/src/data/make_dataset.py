@@ -9,21 +9,15 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 @click.command()
 @click.option(
-    '--input_filepath',
-    default='../../data/raw/winequality-red.csv',
-    type=str
+    "--input_filepath", default="../../data/raw/winequality-red.csv", type=str
 )
-@click.option(
-    '--output_filepath',
-    default='../../data/processed/',
-    type=str
-)
+@click.option("--output_filepath", default="../../data/processed/", type=str)
 def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
+    """Runs data processing scripts to turn raw data from (../raw) into
+    cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info("making final data set from raw data")
 
     input_filepath = Path(input_filepath)
     output_filepath = Path(output_filepath)
@@ -31,23 +25,24 @@ def main(input_filepath, output_filepath):
     # Making binary classificaion for the response variable.
     # Dividing wine as good and bad by giving the limit for the quality
     bins = (2, 6.5, 8)
-    group_names = ['bad', 'good']
+    group_names = ["bad", "good"]
 
     wine = pd.read_csv(input_filepath)
-    wine['quality'] = pd.cut(wine['quality'], bins=bins, labels=group_names)
+    wine["quality"] = pd.cut(wine["quality"], bins=bins, labels=group_names)
 
     # Now lets assign a labels to our quality variable
     label_quality = LabelEncoder()
     # Bad becomes 0 and good becomes 1
-    wine['quality'] = label_quality.fit_transform(wine['quality'])
+    wine["quality"] = label_quality.fit_transform(wine["quality"])
 
     # Now seperate the dataset as response variable and feature variabes
-    X = wine.drop('quality', axis=1)
-    y = wine['quality']
+    X = wine.drop("quality", axis=1)
+    y = wine["quality"]
 
     # Train and Test splitting of data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
-                                                        random_state=42, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
 
     # Applying Standard scaling to get optimized result
     sc = StandardScaler()
@@ -61,10 +56,10 @@ def main(input_filepath, output_filepath):
     X_train.to_csv(output_filepath / "train.csv")
     X_test.to_csv(output_filepath / "test.csv")
 
-    logger.info('done!')
+    logger.info("done!")
 
 
-if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+if __name__ == "__main__":
+    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
     main()

@@ -1,32 +1,24 @@
 stages:
 
-  prepare_data_train:
-    cmd: python scripts/make_dataset.py --flag "train" --root "data/raw/Stanford_Online_Products" --destination "data/interim/dataset"
+  data_visualization:
+    cmd: python src/visualization/visualize.py --path_to_raw_data data/raw/winequality-red.csv --path_to_save_figs reports/figures
     deps:
-      - data/raw/Stanford_Online_Products
+      - data/raw/winequality-red.csv
     outs:
-      - data/interim/dataset/train
+      - reports/figures/fixed_acidity.png
+      - reports/figures/volatile_acidity.png
+      - reports/figures/citric_acid.png
+      - reports/figures/residual_sugar.png
+      - reports/figures/chlorides.png
+      - reports/figures/free_sulfur_dioxide.png
+      - reports/figures/total_sulfur_dioxide.png
+      - reports/figures/sulphates.png
+      - reports/figures/alcohol.png
 
-  prepare_data_test:
-    cmd: python scripts/make_dataset.py --flag "test" --root "data/raw/Stanford_Online_Products" --destination "data/interim/dataset"
+  prepare_data:
+    cmd: python src/data/make_dataset.py --input_filepath data/raw/winequality-red.csv --output_filepath data/processed/
     deps:
-      - data/raw/Stanford_Online_Products
+      - data/raw/winequality-red.csv
     outs:
-      - data/interim/dataset/test
-
-  dataset_stats_visualization:
-    cmd: python scripts/dataset_statistics.py --dataset_folder "data/interim/dataset"
-    deps:
-      - data/interim/dataset/train
-      - data/interim/dataset/test
-    outs:
-      - reports/figures/class_distribution.png
-      - reports/figures/per_class_visualization.png
-
-  generate_processed_file:
-    cmd: COPYFILE_DISABLE=1 tar -cf data/processed/dataset.tar data/interim/dataset/
-    deps:
-      - data/interim/dataset/train
-      - data/interim/dataset/test
-    outs:
-      - data/processed/dataset.tar
+      - data/processed/train.csv
+      - data/processed/test.csv

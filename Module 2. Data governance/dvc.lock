@@ -1,0 +1,51 @@
+schema: '2.0'
+stages:
+  prepare_data:
+    cmd: python src/data/make_dataset.py --input_filepath data/raw/winequality-red.csv
+      --output_filepath data/processed/
+    deps:
+    - path: data/raw/winequality-red.csv
+      md5: 6a883fd98624e18c0b7ce251f4fab4fb
+      size: 100951
+    outs:
+    - path: data/processed/test.csv
+      md5: 773eabb436f0ca08c3cac7ce1f03bc50
+      size: 71299
+    - path: data/processed/train.csv
+      md5: 84808f9205454b9a4ec584f2786c6fc6
+      size: 286465
+  data_visualization:
+    cmd: python src/visualization/visualize.py --path_to_raw_data data/raw/winequality-red.csv
+      --path_to_save_figs reports/figures
+    deps:
+    - path: data/raw/winequality-red.csv
+      md5: 6a883fd98624e18c0b7ce251f4fab4fb
+      size: 100951
+    outs:
+    - path: reports/figures/alcohol.png
+      md5: 846650f1f2c6bf672fee799dec0eb0ca
+      size: 10900
+    - path: reports/figures/chlorides.png
+      md5: dd1c781266a1b5e459f562d6cb7fe23e
+      size: 15363
+    - path: reports/figures/citric_acid.png
+      md5: dd420d03bf82539a6fc8587c9ff3d6dc
+      size: 12163
+    - path: reports/figures/fixed_acidity.png
+      md5: 7b9b735478d66ddf7e28d5a7e1445759
+      size: 10991
+    - path: reports/figures/free_sulfur_dioxide.png
+      md5: f0f47358453de3f406c2a47f33333156
+      size: 14892
+    - path: reports/figures/residual_sugar.png
+      md5: 0a4652482cbe203491ff9e74ebee718d
+      size: 13815
+    - path: reports/figures/sulphates.png
+      md5: f2322d4a4423c17ea94f43134ba3c8ce
+      size: 14109
+    - path: reports/figures/total_sulfur_dioxide.png
+      md5: d4e56e6baba2133cc807c249d6632337
+      size: 13807
+    - path: reports/figures/volatile_acidity.png
+      md5: c38fc4783e627f4f3ca7bee7721b9eee
+      size: 13215

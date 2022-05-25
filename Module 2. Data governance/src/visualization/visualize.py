@@ -8,15 +8,15 @@ from matplotlib import pyplot as plt
 
 
 @click.command()
-@click.argument(
-    'path_to_raw_data',
-    type=click.Path(exists=True),
-    default=Path("../../data/raw/winequality-red.csv")
+@click.option(
+    '--path_to_raw_data',
+    type=str,
+    default="../../data/raw/winequality-red.csv"
 )
-@click.argument(
-    'path_to_save_figs',
-    type=click.Path(exists=True),
-    default=Path("../../reports/figures")
+@click.option(
+    '--path_to_save_figs',
+    type=str,
+    default="../../reports/figures"
 )
 def main(
         path_to_raw_data: str,
@@ -24,6 +24,10 @@ def main(
 ):
     logger = logging.getLogger(__name__)
     logger.info('raw data visualization stage')
+
+    path_to_raw_data = Path(path_to_raw_data)
+    path_to_save_figs = Path(path_to_save_figs)
+
     # Loading dataset
     wine = pd.read_csv(path_to_raw_data)
 

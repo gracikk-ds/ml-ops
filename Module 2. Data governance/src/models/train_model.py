@@ -40,8 +40,8 @@ def main(path_to_dataset, path_to_model_storage):
     svc = SVC(**grid_svc.best_params_)
     svc.fit(x_train, y_train)
 
-    with open(str(path_to_model_storage / "finalized_model.pkl"), "wb") as f:
-        pickle.dump(svc, f)
+    with open(str(path_to_model_storage / "finalized_model.pkl"), "wb") as handle:
+        pickle.dump(svc, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     logger.info("done!")
 

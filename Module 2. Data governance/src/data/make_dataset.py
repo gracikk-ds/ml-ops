@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
     "--input_filepath", default="../../data/raw/winequality-red.csv", type=str
 )
 @click.option("--output_filepath", default="../../data/processed/", type=str)
-def main(input_filepath, output_filepath):
+def make_dataset(input_filepath, output_filepath):
     """Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
@@ -62,4 +62,4 @@ def main(input_filepath, output_filepath):
 if __name__ == "__main__":
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
-    main()
+    make_dataset()

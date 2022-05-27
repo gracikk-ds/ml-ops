@@ -7,6 +7,9 @@ stages:
     - path: data/raw/winequality-red.csv
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
+    - path: src/data/make_dataset.py
+      md5: 6875d587f606a47567691d40fd4b64aa
+      size: 2211
     outs:
     - path: data/processed/test.csv
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
@@ -21,34 +24,37 @@ stages:
     - path: data/raw/winequality-red.csv
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
+    - path: src/visualization/visualize.py
+      md5: 582d677a029ad0f67eec136f796560ca
+      size: 3104
     outs:
     - path: reports/figures/alcohol.png
-      md5: 846650f1f2c6bf672fee799dec0eb0ca
+      md5: 26bf60767f12d7cf669b116d4e0666e2
       size: 10900
     - path: reports/figures/chlorides.png
-      md5: dd1c781266a1b5e459f562d6cb7fe23e
-      size: 15363
+      md5: 2c6b279b5f4fabbae73892cacb77321c
+      size: 15405
     - path: reports/figures/citric_acid.png
-      md5: dd420d03bf82539a6fc8587c9ff3d6dc
-      size: 12163
+      md5: 036b79a00eda4985747d78d117dbd162
+      size: 12166
     - path: reports/figures/fixed_acidity.png
-      md5: 7b9b735478d66ddf7e28d5a7e1445759
-      size: 10991
+      md5: f0c6e907979e15a2020c56ce5572e24b
+      size: 10986
     - path: reports/figures/free_sulfur_dioxide.png
-      md5: f0f47358453de3f406c2a47f33333156
-      size: 14892
+      md5: 7ea375a15008f93b173e61199d8613ff
+      size: 14874
     - path: reports/figures/residual_sugar.png
-      md5: 0a4652482cbe203491ff9e74ebee718d
-      size: 13815
+      md5: 16dcc2790b6dee9be4734928f772b274
+      size: 13813
     - path: reports/figures/sulphates.png
-      md5: f2322d4a4423c17ea94f43134ba3c8ce
-      size: 14109
+      md5: 9db4add1999c83f9ec71ab7824a88940
+      size: 14089
     - path: reports/figures/total_sulfur_dioxide.png
-      md5: d4e56e6baba2133cc807c249d6632337
-      size: 13807
+      md5: 27e2fca18c8f8dc762447dbad64cdc4b
+      size: 13812
     - path: reports/figures/volatile_acidity.png
-      md5: c38fc4783e627f4f3ca7bee7721b9eee
-      size: 13215
+      md5: 5a479a6f28cda5d4f88f4f89590d0333
+      size: 13263
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
       --path_to_model_storage models/
@@ -56,7 +62,39 @@ stages:
     - path: data/processed/train.csv
       md5: 84808f9205454b9a4ec584f2786c6fc6
       size: 286465
+    - path: src/models/train_model.py
+      md5: 8787d9c0fe7bfe506369fdc8452d08b4
+      size: 1635
     outs:
     - path: models/finalized_model.pkl
-      md5: 2a8ea0e224ad3bfd551e008197fa513d
-      size: 42763
+      md5: af50d69916d5568d28d7b3b0ed545814
+      size: 42727
+  evaluation:
+    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
+      --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
+    deps:
+    - path: data/processed/test.csv
+      md5: 773eabb436f0ca08c3cac7ce1f03bc50
+      size: 71299
+    - path: models/finalized_model.pkl
+      md5: af50d69916d5568d28d7b3b0ed545814
+      size: 42727
+    - path: src/models/validate_model.py
+      md5: 85e21483090d3a72275e928241f747e4
+      size: 2240
+    outs:
+    - path: reports/metrics/accuracy.json
+      md5: 30f014aa624e085303393b2702863344
+      size: 21
+    - path: reports/metrics/macro_avg.json
+      md5: e87eda0fec4d471cd33af37a5fd71c8b
+      size: 111
+    - path: reports/metrics/metrics_per_class_0.json
+      md5: 320812224e784f877a43bd4bd8521a2d
+      size: 96
+    - path: reports/metrics/metrics_per_class_1.json
+      md5: 5e82f1f0896c83fa034b9de547fd4851
+      size: 98
+    - path: reports/metrics/weighted_avg.json
+      md5: ddf3f8295b4fabd8cbd2e0b720230298
+      size: 100

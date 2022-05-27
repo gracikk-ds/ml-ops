@@ -4,6 +4,7 @@ stages:
     cmd: python src/visualization/visualize.py --path_to_raw_data data/raw/winequality-red.csv --path_to_save_figs reports/figures
     deps:
       - data/raw/winequality-red.csv
+      - src/visualization/visualize.py
     outs:
       - reports/figures/fixed_acidity.png
       - reports/figures/volatile_acidity.png
@@ -19,6 +20,7 @@ stages:
     cmd: python src/data/make_dataset.py --input_filepath data/raw/winequality-red.csv --output_filepath data/processed/
     deps:
       - data/raw/winequality-red.csv
+      - src/data/make_dataset.py
     outs:
       - data/processed/train.csv
       - data/processed/test.csv
@@ -27,5 +29,19 @@ stages:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv --path_to_model_storage models/
     deps:
       - data/processed/train.csv
+      - src/models/train_model.py
     outs:
       - models/finalized_model.pkl
+
+  evaluation:
+    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
+    deps:
+      - data/processed/test.csv
+      - models/finalized_model.pkl
+      - src/models/validate_model.py
+    metrics:
+      - reports/metrics/metrics_per_class_0.json
+      - reports/metrics/metrics_per_class_1.json
+      - reports/metrics/accuracy.json
+      - reports/metrics/macro_avg.json
+      - reports/metrics/weighted_avg.json

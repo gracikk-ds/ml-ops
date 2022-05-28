@@ -3,6 +3,7 @@ import click
 import pickle
 import logging
 import pandas as pd
+from yaml import dump
 from pathlib import Path
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
@@ -34,7 +35,13 @@ def main(path_to_dataset, path_to_model_storage):
     param = {"C": [0.8, 1, 1.2], "kernel": ["linear", "rbf"], "gamma": [0.8, 1, 1.2]}
     grid_svc = GridSearchCV(svc, param_grid=param, scoring="roc_auc", cv=3)
 
+    # fit the model
     grid_svc.fit(x_train, y_train)
+
+    # save best params
+    with open("params.yaml", "w") as handler:
+        # print(grid_svc.best_params_)
+        dump(param, handler)
 
     # Let's run SVC again with the best parameters.
     svc = SVC(**grid_svc.best_params_)

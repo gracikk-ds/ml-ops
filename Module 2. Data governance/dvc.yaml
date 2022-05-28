@@ -26,13 +26,18 @@ stages:
       - data/processed/test.csv
 
   train_the_model:
-    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv --path_to_model_storage models/
+    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
+    params:
+      - train.C
+      - train.kernel
+      - train.gamma
     deps:
       - data/processed/train.csv
       - src/models/train_model.py
     outs:
       - models/finalized_model.pkl
-      - params.yaml
+    metrics:
+      - reports/metrics/hyper_params.json
 
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
@@ -40,10 +45,6 @@ stages:
       - data/processed/test.csv
       - models/finalized_model.pkl
       - src/models/validate_model.py
-    params: # track specific parameter (from params.yaml)
-      - C
-      - kernel
-      - gamma
     metrics:
       - reports/metrics/metrics_per_class_0.json
       - reports/metrics/metrics_per_class_1.json

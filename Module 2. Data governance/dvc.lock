@@ -57,21 +57,34 @@ stages:
       size: 13263
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
-      --path_to_model_storage models/
+      --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
     deps:
     - path: data/processed/train.csv
       md5: 84808f9205454b9a4ec584f2786c6fc6
       size: 286465
     - path: src/models/train_model.py
-      md5: 94e70f6f7862cb28c8cb03baf570cab7
-      size: 1813
+      md5: 599169d09ef7ca26e3a1f4021d162195
+      size: 2053
+    params:
+      params.yaml:
+        train.C:
+        - 0.8
+        - 1
+        - 1.2
+        train.gamma:
+        - 0.8
+        - 1
+        - 1.2
+        train.kernel:
+        - linear
+        - rbf
     outs:
     - path: models/finalized_model.pkl
       md5: af50d69916d5568d28d7b3b0ed545814
       size: 42727
-    - path: params.yaml
-      md5: 452043b389ce696f42b9d9fd5a0fe286
-      size: 65
+    - path: reports/metrics/hyper_params.json
+      md5: 460840fe98192fcb3a571b600fe6112e
+      size: 42
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
       --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics

@@ -40,7 +40,7 @@ def main(path_to_dataset, path_to_model_storage):
 
     # save best params
     with open("params.yaml", "w") as handler:
-        # print(grid_svc.best_params_)
+        print(grid_svc.best_params_)
         dump(param, handler)
 
     # Let's run SVC again with the best parameters.

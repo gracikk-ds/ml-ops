@@ -1,4 +1,4 @@
-from src.models import validate_model
+from src.models.validate_model import main
 from click.testing import CliRunner
 
 # Initialize runner
@@ -7,7 +7,14 @@ from click.testing import CliRunner
 
 def test_cli_command():
     result = гunner.invoke(
-        validate_model,
-        "../data/processed/test.csv ../models/finalized_model.pkl ../reports/metrics",
+        main,
+        [
+            "--path_to_dataset",
+            "data/processed/test.csv",
+            "--path_to_model_pkl",
+            "models/finalized_model.pkl",
+            "--path_to_metrics_storage",
+            "reports/metrics",
+        ],
     )
     assert result.exit_code == 0

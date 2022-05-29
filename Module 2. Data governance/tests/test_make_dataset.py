@@ -1,4 +1,4 @@
-from src.data import make_dataset
+from src.data.make_dataset import make_dataset
 from click.testing import CliRunner
 
 # Initialize runner
@@ -7,6 +7,12 @@ from click.testing import CliRunner
 
 def test_cli_command():
     result = гunner.invoke(
-        make_dataset, "../data/raw/winequality-red.csv ../data/processed/"
+        make_dataset,
+        [
+            "--input_filepath",
+            "data/raw/winequality-red.csv",
+            "--output_filepath",
+            "data/processed/",
+        ],
     )
     assert result.exit_code == 0

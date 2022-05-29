@@ -6,22 +6,25 @@ import logging
 import pandas as pd
 from pathlib import Path
 from sklearn.metrics import classification_report
+from src.utils import get_project_root
+
+
+root = get_project_root()
 
 
 @click.command()
-@click.option("--path_to_dataset", default="../../data/processed/test.csv", type=str)
-@click.option(
-    "--path_to_model_pkl", default="../../models/finalized_model.pkl", type=str
-)
-@click.option("--path_to_metrics_storage", default="../../reports/metrics", type=str)
+@click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
+@click.option("--path_to_model_pkl", default="models/finalized_model.pkl", type=str)
+@click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
 def main(path_to_dataset, path_to_model_pkl, path_to_metrics_storage):
     """Runs validation method"""
 
     logger = logging.getLogger(__name__)
     logger.info("Start predicting process")
 
-    path_to_dataset = Path(path_to_dataset)
-    path_to_metrics_storage = Path(path_to_metrics_storage)
+    path_to_dataset = root / Path(path_to_dataset)
+    path_to_model_pkl = root / Path(path_to_model_pkl)
+    path_to_metrics_storage = root / Path(path_to_metrics_storage)
 
     # read dataset
     test = pd.read_csv(path_to_dataset)

@@ -1,28 +1,30 @@
 # -*- coding: utf-8 -*-
+import os
 import click
 import pickle
 import logging
 import datetime
 import pandas as pd
 from pathlib import Path
+from src.utils import get_project_root
+
+
+root = get_project_root()
 
 
 @click.command()
-@click.option("--path_to_dataset", default="../../data/processed/test.csv", type=str)
-@click.option(
-    "--path_to_model_pkl", default="../../models/finalized_model.pkl", type=str
-)
-@click.option(
-    "--path_to_predictions_storage", default="../../data/predictions", type=str
-)
+@click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
+@click.option("--path_to_model_pkl", default="models/finalized_model.pkl", type=str)
+@click.option("--path_to_predictions_storage", default="data/predictions", type=str)
 def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
     """Runs model's predict method"""
 
     logger = logging.getLogger(__name__)
     logger.info("Start predicting process")
 
-    path_to_dataset = Path(path_to_dataset)
-    path_to_predictions_storage = Path(path_to_predictions_storage)
+    path_to_dataset = root / Path(path_to_dataset)
+    path_to_model_pkl = root / Path(path_to_model_pkl)
+    path_to_predictions_storage = root / Path(path_to_predictions_storage)
 
     # read dataset
     x_test = pd.read_csv(path_to_dataset)
@@ -45,7 +47,7 @@ def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
     logger.info("done!")
 
 
-if __name__ == "__main__":
-    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-    main()
+# if __name__ == "__main__":
+#     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+#     logging.basicConfig(level=logging.INFO, format=log_fmt)
+#     main()

@@ -8,6 +8,10 @@ import pandas as pd
 from pathlib import Path
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
+from src.utils import get_project_root
+
+
+root = get_project_root()
 
 
 @click.command()
@@ -20,9 +24,9 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     logger = logging.getLogger(__name__)
     logger.info("Start model training process")
 
-    path_to_dataset = Path(path_to_dataset)
-    path_to_model_storage = Path(path_to_model_storage)
-    path_to_metrics_storage = Path(path_to_metrics_storage)
+    path_to_dataset = root / Path(path_to_dataset)
+    path_to_model_storage = root / Path(path_to_model_storage)
+    path_to_metrics_storage = root / Path(path_to_metrics_storage)
 
     # read dataset
     train = pd.read_csv(path_to_dataset)

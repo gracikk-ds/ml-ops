@@ -5,19 +5,21 @@ import pandas as pd
 import seaborn as sns
 from pathlib import Path
 from matplotlib import pyplot as plt
+from src.utils import get_project_root
+
+
+root = get_project_root()
 
 
 @click.command()
-@click.option(
-    "--path_to_raw_data", type=str, default="../../data/raw/winequality-red.csv"
-)
-@click.option("--path_to_save_figs", type=str, default="../../reports/figures")
+@click.option("--path_to_raw_data", type=str, default="data/raw/winequality-red.csv")
+@click.option("--path_to_save_figs", type=str, default="reports/figures")
 def main(path_to_raw_data: str, path_to_save_figs):
     logger = logging.getLogger(__name__)
     logger.info("raw data visualization stage")
 
-    path_to_raw_data = Path(path_to_raw_data)
-    path_to_save_figs = Path(path_to_save_figs)
+    path_to_raw_data = root / Path(path_to_raw_data)
+    path_to_save_figs = root / Path(path_to_save_figs)
 
     # Loading dataset
     wine = pd.read_csv(path_to_raw_data)

@@ -2,9 +2,8 @@ name: CML
 on: [push]
 
 jobs:
-  run:
-  # job1:
-  # name: Test Job 1
+  job1:
+    name: Test Job 1
     runs-on: ubuntu-latest
     container: docker://ghcr.io/iterative/cml:0-dvc2-base1
 
@@ -16,7 +15,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "The job was automatically triggered by a ${{ github.event_name }} event." > report.md
+          echo "The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
           cml send-comment report.md
           
 #       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"

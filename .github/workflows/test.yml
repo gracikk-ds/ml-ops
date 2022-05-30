@@ -1,5 +1,12 @@
 name: CML
 on: [push]
+
+env:
+  MY_VAR: Hi there! My name is
+  FIRST_NAME: Mona
+  MIDDLE_NAME: The
+  LAST_NAME: Octocat
+
 jobs:
   job1:
     name: Test Job 1
@@ -10,15 +17,6 @@ jobs:
 #       run:
 #         working-directory: ./Module 2. Data governance
     steps:  
-      - name: Print a greeting
-        env:
-          MY_VAR: Hi there! My name is
-          FIRST_NAME: Mona
-          MIDDLE_NAME: The
-          LAST_NAME: Octocat
-        run: |
-          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
-      
       - name: Print a greeting
         run: |
           echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.

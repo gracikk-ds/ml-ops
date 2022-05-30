@@ -50,9 +50,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Pylint
-        run: |
-          python lint.py --path ./ --threshold 2
+#      - name: Run Pylint
+#        run: |
+#          python lint.py --path ./ --threshold 2
+      - name: Python Pylin GitHub Action
+        uses: fylein/python-pylint-github-action@v1
+        with:
+          args: pip3 install -r requirements.txt && pylint --rcfile=.pylintrc ./Module 2. Data governance/
 
       - name: Run black --check .
         run: black --check .

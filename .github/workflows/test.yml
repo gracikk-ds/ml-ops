@@ -1,5 +1,8 @@
 name: CML
 on: [push]
+defaults:
+  run:
+    working-directory: Module\ 2.\ Data\ governance
 jobs:
   run:
     runs-on: ubuntu-latest

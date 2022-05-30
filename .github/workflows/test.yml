@@ -21,7 +21,7 @@ jobs:
       - name: check current pwd
         run: pwd
       - name: List files in the repository
-        run: ls ${{ github.workspace }}
+        run: ls ${{ GITHUB_WORKSPACE }}
 
         
       - name: List files in the workdir

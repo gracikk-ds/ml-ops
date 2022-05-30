@@ -13,28 +13,23 @@ jobs:
     steps:           
       - name: Check out repository code
         uses: actions/checkout@v3
+        
       - name: set up python env
         uses: actions/setup-python@v2
+        
       - name: set up cml
         uses: iterative/setup-cml@v1
 
-      - name: push summary
+      - name: triggered action summary
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
+          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
+          echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!" >> report.md
+          echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}. >> report.md 
+          echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
+          echo "🖥️ The workflow is now ready to test your code on the runner." >> report.md
           cml send-comment report.md
           
-#       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." >> report.md
-#       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
-#       - name: check current pwd
-#         run: pwd
-        
-#       - name: List files in the workdir
-#         run: |
-#           cd ./Module\ 2.\ Data\ governance
-#           ls
-        
-#       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - run: pwd
     

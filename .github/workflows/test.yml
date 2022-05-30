@@ -11,7 +11,7 @@ jobs:
 #         working-directory: ./Module 2. Data governance
     steps:  
       - env: 
-          GITHUB_WORKSPACE: /Mone/
+          kjhklh: /Mone/
       - name: Check out repository code
         uses: actions/checkout@v3
 

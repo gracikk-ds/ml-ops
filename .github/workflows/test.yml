@@ -1,9 +1,8 @@
 name: CML
 on: [push]
-
 jobs:
-  cml_test_job:
-    name: Test Job
+  job1:
+    name: Test Job 1
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -12,10 +11,13 @@ jobs:
       
       - name: Check out repository code
         uses: actions/checkout@v3
-      
-      # - name: change working dir
-      #   working-directory: Module 2. Data governance
-        
+      - name: List files in the repository
+        run: ls
+
+  job2:
+    name: Test Job 2
+    needs: cml_test_job_step_1
+    steps:    
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       

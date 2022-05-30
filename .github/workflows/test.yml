@@ -1,6 +1,10 @@
 name: CML
 on: [push]
 
+defaults:
+  run:
+    working-directory: Module 2. Data governance
+
 jobs:
   job1:
     name: Test Job 1

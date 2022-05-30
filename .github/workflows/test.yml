@@ -12,7 +12,7 @@ jobs:
       - name: set up python env
         uses: actions/setup-python@v2
       - name: set up cml
-        uses: iterative/setup-cml@v2
+        uses: iterative/setup-cml@v1
 
       - name: push summary
         env:

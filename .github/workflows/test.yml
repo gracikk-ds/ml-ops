@@ -22,7 +22,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-        working-directory: ./Module\ 2.\ Data\ governance
+        working-directory: ./Module 2. Data governance
         
       - run: echo "🍏 This job's status is ${{ job.status }}."
     

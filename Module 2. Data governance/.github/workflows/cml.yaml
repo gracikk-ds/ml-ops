@@ -14,5 +14,6 @@ jobs:
           poetry config virtualenvs.create false
           poetry install
 
-          cat reports/accuracy.json >> report.md
+          cat reports/metrics/accuracy.json >> report.md
+          # cml publish plot.png --md >> report.md
           cml send-comment report.md

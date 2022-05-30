@@ -23,10 +23,15 @@ jobs:
 #         run: ls ${{ github.workspace }}
       - name: check current pwd
         run: pwd
+        
+      - name: List files in the workdir
+        run: |
+          cd ./Module\ 2.\ Data\ governance
+          ls
+          
       - name: List files in the workdir
         run: |
           ls
-          cd ./Module\ 2.\ Data\ governance
-          ls
+        
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
     

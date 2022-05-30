@@ -5,9 +5,9 @@ jobs:
     name: Test Job 1
     runs-on: ubuntu-latest
     container: docker://ghcr.io/iterative/cml:0-dvc2-base1
-    defaults:
-      run:
-        working-directory: ./Module 2. Data governance
+#     defaults:
+#       run:
+#         working-directory: ./Module 2. Data governance
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3

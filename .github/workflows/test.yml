@@ -10,9 +10,12 @@ jobs:
     steps:           
       - name: Check out repository code
         uses: actions/checkout@v3
-
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!" >> report.md
+      - name: push summary
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
+          echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!" >> report.md
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." >> report.md
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
       - name: check current pwd

@@ -37,7 +37,6 @@ jobs:
           pip install poetry
           poetry config virtualenvs.create false
           poetry install
-          cat reports/metrics/accuracy.json >> report.md
       
 #       - name: Run flake8
 #         run: echo "running flake8"
@@ -46,29 +45,28 @@ jobs:
         uses: julianwachholz/flake8-action@v2
         with:
           checkName: "Python Lint"
-          path: .
-          plugins: flake8-spellcheck
-          config: tox.ini
+          path: ./
+          config: ./Module\ 2.\ Data governance/tox.ini
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Run Pylint
         run: |
-          python lint.py --path ./src --threshold 2
+          python lint.py --path ./ --threshold 2
         
       - name: Run black --check .
         run: black --check .
         
-      - name: If needed, commit black changes to the pull request
-        if: failure()
-        run: |
-          black .
-          git config --global user.name 'autoblack'
-          git config --global user.email 'cclauss@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout $GITHUB_HEAD_REF
-          git commit -am "fixup: Format Python code with Black"
-          git push
+#       - name: If needed, commit black changes to the pull request
+#         if: failure()
+#         run: |
+#           black .
+#           git config --global user.name 'autoblack'
+#           git config --global user.email 'cclauss@users.noreply.github.com'
+#           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+#           git checkout $GITHUB_HEAD_REF
+#           git commit -am "fixup: Format Python code with Black"
+#           git push
         
       - name: Run dvc
         run: echo "running dvc pull"    

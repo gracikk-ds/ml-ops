@@ -12,7 +12,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./Module 2. Data governance
+        working-directory: /__w/ml-ops/ml-ops/Module 2. Data governance
     steps:           
       - name: Check out repository code
         uses: actions/checkout@v3

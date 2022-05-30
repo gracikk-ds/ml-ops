@@ -1,6 +1,8 @@
 name: CML
 on: [push]
 
+# fuck off!
+
 jobs:
   cml_test_job:
     name: Test Job

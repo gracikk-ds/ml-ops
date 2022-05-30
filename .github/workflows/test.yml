@@ -9,9 +9,8 @@ jobs:
 #     defaults:
 #       run:
 #         working-directory: ./Module 2. Data governance
-    steps:
-      - name: Create env repo_token   
-        env:
+    steps:  
+      - env: 
           GITHUB_WORKSPACE: /Mone/
       - name: Check out repository code
         uses: actions/checkout@v3

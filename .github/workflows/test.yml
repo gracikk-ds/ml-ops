@@ -10,12 +10,12 @@ jobs:
 #       run:
 #         working-directory: ./Module 2. Data governance
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
       - name: Create env repo_token   
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_WORKSPACE: /Mone/
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."

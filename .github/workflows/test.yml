@@ -5,10 +5,13 @@ jobs:
   job1:
     name: Test Job 1
     runs-on: ubuntu-latest
-    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
 
     steps:           
       - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: set up python env
+        uses: actions/checkout@v2
+      - name: set up cml
         uses: actions/checkout@v2
 
       - name: push summary

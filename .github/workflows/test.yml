@@ -46,8 +46,7 @@ jobs:
         with:
           checkName: "Python Lint"
           path: ./
-          plugins: flake8-spellcheck
-          config: ./tox.ini
+          config: ./Module\ 2.\ Data governance/tox.ini
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         

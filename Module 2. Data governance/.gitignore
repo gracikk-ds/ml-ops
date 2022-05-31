@@ -87,4 +87,3 @@ target/
 
 # Ignore dynaconf secret files
 .secrets.*
-/params.yaml

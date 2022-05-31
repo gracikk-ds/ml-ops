@@ -6,7 +6,7 @@ import logging
 import pandas as pd
 from pathlib import Path
 from sklearn.metrics import classification_report
-from src.utils import get_project_root
+from utility import get_project_root
 
 
 root = get_project_root()

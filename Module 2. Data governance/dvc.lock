@@ -8,8 +8,8 @@ stages:
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
     - path: src/data/make_dataset.py
-      md5: 6875d587f606a47567691d40fd4b64aa
-      size: 2211
+      md5: 62f299e548ec7a43e28849abbf63dc22
+      size: 2272
     outs:
     - path: data/processed/test.csv
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
@@ -25,36 +25,36 @@ stages:
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
     - path: src/visualization/visualize.py
-      md5: 582d677a029ad0f67eec136f796560ca
-      size: 3104
+      md5: 9fcd34d091679f413e9e9bed80380c2c
+      size: 3165
     outs:
     - path: reports/figures/alcohol.png
-      md5: 26bf60767f12d7cf669b116d4e0666e2
-      size: 10900
+      md5: f02cdaba800de7e6ede0fe7b59b82dea
+      size: 10891
     - path: reports/figures/chlorides.png
-      md5: 2c6b279b5f4fabbae73892cacb77321c
-      size: 15405
+      md5: d5ea50d27271f9f2f0a14489a948c333
+      size: 15383
     - path: reports/figures/citric_acid.png
-      md5: 036b79a00eda4985747d78d117dbd162
-      size: 12166
+      md5: a4ae842431eb4e8ec3dd8b88d35783bc
+      size: 12212
     - path: reports/figures/fixed_acidity.png
-      md5: f0c6e907979e15a2020c56ce5572e24b
-      size: 10986
+      md5: 9e546c624a30450399d25261dc785f2d
+      size: 11441
     - path: reports/figures/free_sulfur_dioxide.png
-      md5: 7ea375a15008f93b173e61199d8613ff
-      size: 14874
+      md5: a204b1cf9e89ee2d42fff61b6bfbe887
+      size: 14920
     - path: reports/figures/residual_sugar.png
-      md5: 16dcc2790b6dee9be4734928f772b274
-      size: 13813
+      md5: 756ede679457806cfd3e429ceb1661b2
+      size: 13841
     - path: reports/figures/sulphates.png
-      md5: 9db4add1999c83f9ec71ab7824a88940
-      size: 14089
+      md5: 5cf12a5cdc8418de9b543f6ce29865a9
+      size: 14119
     - path: reports/figures/total_sulfur_dioxide.png
-      md5: 27e2fca18c8f8dc762447dbad64cdc4b
-      size: 13812
+      md5: 9df9d8959c1655749853fae4e9b4a8ec
+      size: 13815
     - path: reports/figures/volatile_acidity.png
-      md5: 5a479a6f28cda5d4f88f4f89590d0333
-      size: 13263
+      md5: 873d16eb3fce01d5fc08defc79e64454
+      size: 13285
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
       --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
@@ -62,29 +62,31 @@ stages:
     - path: data/processed/train.csv
       md5: 84808f9205454b9a4ec584f2786c6fc6
       size: 286465
+    - path: params.yaml
+      md5: 6a0c2678bc9032b802dbe50b13440d2d
+      size: 83
     - path: src/models/train_model.py
-      md5: 599169d09ef7ca26e3a1f4021d162195
-      size: 2053
+      md5: 2bf41b73b1a0e43c31573199a84f8ff1
+      size: 2212
     params:
       params.yaml:
         train.C:
-        - 0.8
+        - 0.01
+        - 0.1
         - 1
-        - 1.2
-        train.gamma:
-        - 0.8
-        - 1
-        - 1.2
-        train.kernel:
-        - linear
-        - rbf
+        - 3
+        - 7
+        - 10
+        train.penalty:
+        - l1
+        - l2
     outs:
     - path: models/finalized_model.pkl
-      md5: af50d69916d5568d28d7b3b0ed545814
-      size: 42727
+      md5: 68e7889c2661feac0f8df4d1597a1e35
+      size: 1076
     - path: reports/metrics/hyper_params.json
-      md5: 460840fe98192fcb3a571b600fe6112e
-      size: 42
+      md5: 0b8d9888962c9f51b0aca44382e5b4e3
+      size: 25
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
       --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
@@ -93,37 +95,12 @@ stages:
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: models/finalized_model.pkl
-      md5: af50d69916d5568d28d7b3b0ed545814
-      size: 42727
+      md5: 68e7889c2661feac0f8df4d1597a1e35
+      size: 1076
     - path: src/models/validate_model.py
-      md5: 97c2ffcf0bafd9321c59e76a3542bd0d
-      size: 2256
-    params:
-      params.yaml:
-        C:
-        - 0.8
-        - 1
-        - 1.2
-        gamma:
-        - 0.8
-        - 1
-        - 1.2
-        kernel:
-        - linear
-        - rbf
+      md5: 4fa9976382168a79ce20edffd81213e1
+      size: 2366
     outs:
     - path: reports/metrics/accuracy.json
-      md5: 30f014aa624e085303393b2702863344
+      md5: bb2592d49a07a647ae05a996cad58233
       size: 21
-    - path: reports/metrics/macro_avg.json
-      md5: e87eda0fec4d471cd33af37a5fd71c8b
-      size: 111
-    - path: reports/metrics/metrics_per_class_0.json
-      md5: 320812224e784f877a43bd4bd8521a2d
-      size: 96
-    - path: reports/metrics/metrics_per_class_1.json
-      md5: 5e82f1f0896c83fa034b9de547fd4851
-      size: 98
-    - path: reports/metrics/weighted_avg.json
-      md5: ddf3f8295b4fabd8cbd2e0b720230298
-      size: 100

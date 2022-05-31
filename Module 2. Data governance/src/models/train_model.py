@@ -6,9 +6,9 @@ import pickle
 import logging
 import pandas as pd
 from pathlib import Path
-from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
-from src.utils import get_project_root
+from sklearn.linear_model import LogisticRegression
+from utility import get_project_root
 
 
 root = get_project_root()
@@ -36,7 +36,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     y_train = train["target"]
 
     # init svc model
-    svc = SVC()
+    svc = LogisticRegression(solver="liblinear")
 
     # save best params
     with open(root / Path("params.yaml"), "r") as stream:
@@ -50,7 +50,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     grid_svc.fit(x_train, y_train)
 
     # Let's run SVC again with the best parameters.
-    svc = SVC(**grid_svc.best_params_)
+    svc = LogisticRegression(solver="liblinear", **grid_svc.best_params_)
     svc.fit(x_train, y_train)
 
     with open(str(path_to_metrics_storage / "hyper_params.json"), "w") as handler:

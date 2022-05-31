@@ -2,10 +2,12 @@
 import click
 import pickle
 import logging
-import datetime
+
+# import datetime
+
 import pandas as pd
 from pathlib import Path
-from src.utils import get_project_root
+from utility import get_project_root
 
 
 root = get_project_root()
@@ -37,11 +39,9 @@ def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
 
     predictions = pd.DataFrame(data=svc.predict(x_test), columns=["wine_quality"])
 
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+    # current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
-    predictions.to_csv(
-        path_to_predictions_storage / ("predictions_" + current_time + ".csv")
-    )
+    predictions.to_csv(path_to_predictions_storage / "predictions.csv")
 
     logger.info("done!")
 

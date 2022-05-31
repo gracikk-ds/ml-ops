@@ -5,7 +5,7 @@ import pandas as pd
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
-from src.utils import get_project_root
+from utility import get_project_root
 
 
 root = get_project_root()

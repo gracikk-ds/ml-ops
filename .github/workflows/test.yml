@@ -66,7 +66,7 @@ jobs:
           git push
 
       - name: Run dvc
-        run: echo "running dvc pull"
+        run: dvc pull
 
       - name: Run tests
-        run: echo "running tests"
+        run: pytest

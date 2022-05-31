@@ -38,9 +38,6 @@ jobs:
           poetry config virtualenvs.create false
           poetry install
 
-#       - name: Run flake8
-#         run: echo "running flake8"
-
       - name: Run flake8
         uses: julianwachholz/flake8-action@v2
         with:
@@ -49,10 +46,6 @@ jobs:
           config: ./Module 2. Data governance/tox.ini
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Pylint
-        run: |
-          python tests/lint.py --threshold 4
 
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}
@@ -64,9 +57,16 @@ jobs:
           git checkout $GITHUB_HEAD_REF
           git commit -am "fixup: Format Python code with Black"
           git push
+          
+      - name: Run Pylint
+        run: |
+          python tests/lint.py --threshold 4  # add output string to report.md
 
-      - name: Run dvc
-        run: dvc pull
+#       - name: Run dvc
+#         run: dvc pull
 
-      - name: Run tests
-        run: pytest
+#       - name: Run tests
+#         run: pytest
+
+      - name: send comments
+        run: cml send-comment report.md

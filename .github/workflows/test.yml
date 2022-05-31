@@ -21,8 +21,6 @@ jobs:
         uses: iterative/setup-cml@v1
 
       - name: Action summary
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "## Action summary" >> report.md
           echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
@@ -30,16 +28,12 @@ jobs:
           echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." >> report.md
           echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
           echo "🖥️ The workflow is now ready to test your code on the runner." >> report.md
-          # cml send-comment report.md
 
       - name: instal dependencies
         run: |
           pip install poetry
           poetry config virtualenvs.create false
           poetry install
-
-#       - name: Run flake8
-#         run: echo "running flake8"
 
       - name: Run flake8
         uses: julianwachholz/flake8-action@v2
@@ -49,10 +43,6 @@ jobs:
           config: ./Module 2. Data governance/tox.ini
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Pylint
-        run: |
-          python tests/lint.py --threshold 4
 
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}
@@ -64,9 +54,18 @@ jobs:
           git checkout $GITHUB_HEAD_REF
           git commit -am "fixup: Format Python code with Black"
           git push
+          
+      - name: Run Pylint
+        run: |
+          python tests/lint.py --threshold 4  # add output string to report.md
 
-      - name: Run dvc
-        run: echo "running dvc pull"
+#       - name: Run dvc
+#         run: dvc pull
 
-      - name: Run tests
-        run: echo "running tests"
+#       - name: Run tests
+#         run: pytest
+
+      - name: send comments
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cml send-comment report.md

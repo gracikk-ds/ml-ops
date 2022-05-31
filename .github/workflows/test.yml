@@ -21,8 +21,6 @@ jobs:
         uses: iterative/setup-cml@v1
 
       - name: Action summary
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "## Action summary" >> report.md
           echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
@@ -30,7 +28,6 @@ jobs:
           echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." >> report.md
           echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
           echo "🖥️ The workflow is now ready to test your code on the runner." >> report.md
-          # cml send-comment report.md
 
       - name: instal dependencies
         run: |
@@ -69,4 +66,6 @@ jobs:
 #         run: pytest
 
       - name: send comments
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cml send-comment report.md

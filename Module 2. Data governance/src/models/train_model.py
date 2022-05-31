@@ -3,15 +3,35 @@ import yaml
 import json
 import click
 import pickle
+import optuna
 import logging
 import pandas as pd
 from pathlib import Path
-from sklearn.model_selection import GridSearchCV
+from functools import partial
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
 from utility import get_project_root
 
 
 root = get_project_root()
+
+
+def objective(trial, params, x_train, y_train):
+    penalty = trial.suggest_categorical("penalty", params["penalty"])
+    c = trial.suggest_float(
+        "C",
+        float(params["C"]["upper_bound"]),
+        float(params["C"]["lower_bound"]),
+        log=True,
+    )
+
+    clf = LogisticRegression(solver="liblinear", penalty=penalty, C=c)
+
+    target = cross_val_score(
+        clf, x_train, y_train, n_jobs=-1, cv=3, scoring="f1_weighted"
+    ).mean()
+
+    return target
 
 
 @click.command()
@@ -35,29 +55,29 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     x_train = train.drop("target", axis=1)
     y_train = train["target"]
 
-    # init svc model
-    svc = LogisticRegression(solver="liblinear")
-
     # save best params
     with open(root / Path("params.yaml"), "r") as stream:
         params = yaml.safe_load(stream)["train"]
         print(params)
 
-    # Finding best parameters for SVC model
-    grid_svc = GridSearchCV(svc, param_grid=params, scoring="roc_auc", cv=3)
+    obj_partial = partial(objective, params=params, x_train=x_train, y_train=y_train)
 
-    # fit the model
-    grid_svc.fit(x_train, y_train)
+    study = optuna.create_study(direction="minimize")
+    study.optimize(obj_partial, n_trials=10)
+
+    trial = study.best_trial
+
+    print("Best hyperparameters: {}".format(trial.params))
 
     # Let's run SVC again with the best parameters.
-    svc = LogisticRegression(solver="liblinear", **grid_svc.best_params_)
-    svc.fit(x_train, y_train)
+    clf = LogisticRegression(solver="liblinear", **trial.params)
+    clf.fit(x_train, y_train)
 
     with open(str(path_to_metrics_storage / "hyper_params.json"), "w") as handler:
-        json.dump(grid_svc.best_params_, handler)
+        json.dump(trial.params, handler)
 
     with open(str(path_to_model_storage / "finalized_model.pkl"), "wb") as handle:
-        pickle.dump(svc, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(clf, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     logger.info("done!")
 

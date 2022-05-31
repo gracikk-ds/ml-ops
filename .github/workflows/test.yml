@@ -52,7 +52,7 @@ jobs:
 
       - name: Run Pylint
         run: |
-          python tests/lint.py --path . --threshold 2
+          python tests/lint.py --threshold 4
 
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}

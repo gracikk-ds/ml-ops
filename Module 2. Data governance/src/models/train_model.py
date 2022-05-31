@@ -15,9 +15,9 @@ root = get_project_root()
 
 
 @click.command()
-@click.option("--path_to_dataset", default="../../data/processed/train.csv", type=str)
-@click.option("--path_to_model_storage", default="../../models", type=str)
-@click.option("--path_to_metrics_storage", default="../../reports/metrics", type=str)
+@click.option("--path_to_dataset", default="data/processed/train.csv", type=str)
+@click.option("--path_to_model_storage", default="models", type=str)
+@click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
 def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     """Runs training job and save best model to model's storage"""
 
@@ -39,7 +39,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     svc = SVC()
 
     # save best params
-    with open("params.yaml", "r") as stream:
+    with open(root / Path("params.yaml"), "r") as stream:
         params = yaml.safe_load(stream)["train"]
         print(params)
 

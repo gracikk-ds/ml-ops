@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 import click
 import pickle
 import logging
@@ -47,7 +46,7 @@ def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
     logger.info("done!")
 
 
-# if __name__ == "__main__":
-#     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-#     logging.basicConfig(level=logging.INFO, format=log_fmt)
-#     main()
+if __name__ == "__main__":
+    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    logging.basicConfig(level=logging.INFO, format=log_fmt)
+    main()

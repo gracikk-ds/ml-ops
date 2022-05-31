@@ -1,10 +1,10 @@
-import argparse
 import click
 import logging
 from pylint.lint import Run
 
 
-@click.command(
+@click.command()
+@click.option(
     "--path", help="path to directory you want to run pylint", default="./src", type=str
 )
 @click.option(

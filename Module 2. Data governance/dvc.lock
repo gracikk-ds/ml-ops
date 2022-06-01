@@ -29,32 +29,32 @@ stages:
       size: 3165
     outs:
     - path: reports/figures/alcohol.png
-      md5: f02cdaba800de7e6ede0fe7b59b82dea
-      size: 10891
+      md5: 7b007be746665f630d0361fe91c1f523
+      size: 10880
     - path: reports/figures/chlorides.png
-      md5: d5ea50d27271f9f2f0a14489a948c333
-      size: 15383
+      md5: e37003a895f7e52996f0d93b178c50fd
+      size: 15349
     - path: reports/figures/citric_acid.png
-      md5: a4ae842431eb4e8ec3dd8b88d35783bc
-      size: 12212
+      md5: db4c24ff77acc424043dfecfa874326c
+      size: 12168
     - path: reports/figures/fixed_acidity.png
-      md5: 9e546c624a30450399d25261dc785f2d
-      size: 11441
+      md5: 9cd0ad43edddd965631105ba84db60ab
+      size: 11445
     - path: reports/figures/free_sulfur_dioxide.png
-      md5: a204b1cf9e89ee2d42fff61b6bfbe887
-      size: 14920
+      md5: 658a0a6ba3543a3f57627f1c493c9b77
+      size: 14904
     - path: reports/figures/residual_sugar.png
-      md5: 756ede679457806cfd3e429ceb1661b2
-      size: 13841
+      md5: 497bfe3bab75756b5a98df22d5fec886
+      size: 13847
     - path: reports/figures/sulphates.png
-      md5: 5cf12a5cdc8418de9b543f6ce29865a9
-      size: 14119
+      md5: 32dfa2e9bdf7380c261620d9b75ad3c6
+      size: 14070
     - path: reports/figures/total_sulfur_dioxide.png
-      md5: 9df9d8959c1655749853fae4e9b4a8ec
-      size: 13815
+      md5: cde7b46e32846606afe61e78fbee997b
+      size: 13835
     - path: reports/figures/volatile_acidity.png
-      md5: 873d16eb3fce01d5fc08defc79e64454
-      size: 13285
+      md5: d0f6c0562a725af07fb8aca4959d9876
+      size: 13254
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
       --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
@@ -66,8 +66,8 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: f7c4d37d22a520f66b22eebda241c25f
-      size: 3119
+      md5: e2d5772a849e03de6cd8a6616fe6d73f
+      size: 3136
     params:
       params.yaml:
         train.C:
@@ -78,14 +78,14 @@ stages:
         - l2
     outs:
     - path: models/finalized_model.pkl
-      md5: 3db49661a12d4600ecf06bf10367616c
+      md5: 6780886b10ef82f7b5c546489eaae466
       size: 1083
     - path: reports/features_importance/shap_values.png
-      md5: d81ac1b42f6be5470f13e22c92e43066
-      size: 107368
+      md5: 4ce3772420ecf19319ee0dd7a4887731
+      size: 107883
     - path: reports/metrics/hyper_params.json
-      md5: fa4b69a1f235f7bbc7967de1c8420512
-      size: 42
+      md5: 13d321b95e0c0fe498ef02120fc1a974
+      size: 43
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
       --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
@@ -94,15 +94,15 @@ stages:
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: models/finalized_model.pkl
-      md5: 3db49661a12d4600ecf06bf10367616c
+      md5: 6780886b10ef82f7b5c546489eaae466
       size: 1083
     - path: src/models/validate_model.py
-      md5: d220489259e843edef74d0d60704c454
-      size: 2206
+      md5: e50e1ddd3de1fc857c36b54c5c457672
+      size: 2203
     outs:
     - path: reports/metrics/metrics.json
-      md5: 34cdc96d9ad913c44785de6ec72fb79a
-      size: 105
+      md5: 9dd65f046ea470c8d7784f2bb16e3d89
+      size: 106
     - path: reports/metrics/plots.json
-      md5: 8d1dfce4b39af4df275539e8b5eee38d
-      size: 3110
+      md5: 2c348df8c0c072ce31c484f69612c415
+      size: 3108

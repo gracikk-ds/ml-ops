@@ -92,4 +92,6 @@ jobs:
           vl2png vega.json -s 1.5 > plot.png
           cml publish --md plot.png >> report.md
 
+          echo "## Feature Importance SHAP" >> report.md
+          cml publish --md reports/features_importance/shap_values.png >> report.md
           cml send-comment report.md

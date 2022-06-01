@@ -1,9 +1,6 @@
 name: CML
 on: [push]
 
-# defaults:
-#   run:
-#     working-directory: Module 2. Data governance
 
 jobs:
   changes:
@@ -12,7 +9,7 @@ jobs:
     outputs:
       module_1: ${{ steps.filter.outputs.module_1 }}
       module_2: ${{ steps.filter.outputs.module_2 }}
-      
+
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v2
@@ -23,13 +20,13 @@ jobs:
             - 'Module 1. Containerization/**'
           module_2:
             - 'Module 2. Data governance/**'
-            
+
     - name: show the directory
       if: steps.filter.outputs.module_2 == 'true'
       run: |
         echo "good job, module 2!"
-      
-            
+
+
   job_module_2:
     name: Job for Module 2
     needs: changes
@@ -80,6 +77,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - nama: Run Black
+        working-directory: Module 2. Data governance
+        run: black .
+
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}
         working-directory: Module 2. Data governance
@@ -97,19 +98,17 @@ jobs:
         run: |
           python tests/lint.py --threshold 3
 
-      - name: Run dvc
+      - name: Run unit tests and dvc repro
         working-directory: Module 2. Data governance
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dvc pull
+          pytest
           dvc repro
           git fetch --prune
 
-#      - name: Run tests
-#        run: pytest
-
-      - name: show plots
+      - name: show plots and metrics
         working-directory: Module 2. Data governance
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}

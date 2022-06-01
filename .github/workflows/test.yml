@@ -82,7 +82,7 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "## Model metrics diff" >> report.md
-          dvc metrics diff --show-md main >> report.md
+          dvc metrics diff main --show-md >> report.md
 
           echo "## ROC-AUC Curve" >> report.md
           dvc plots diff --target reports/metrics/plots.json \

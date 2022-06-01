@@ -69,6 +69,8 @@ jobs:
           python tests/lint.py --threshold 3
 
       - name: Run dvc
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dvc pull
           dvc repro

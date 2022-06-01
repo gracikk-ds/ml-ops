@@ -65,8 +65,8 @@ jobs:
           dvc repro
           git fetch --prune
 
-      - name: Run tests
-        run: pytest
+#      - name: Run tests
+#        run: pytest
 
       - name: show plots
         env:

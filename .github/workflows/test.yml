@@ -70,3 +70,13 @@ jobs:
 
       - name: Run tests
         run: pytest
+
+      - name: show dvc metrics
+        run: |
+          echo "## Model metrics" >> report.md
+          cat reports/metrics/metrics.json
+
+          echo "## ROC-AUC Curve"
+          cml-publish roc-auc-curve.png --md >> report.md
+
+          cml send-comment report.md

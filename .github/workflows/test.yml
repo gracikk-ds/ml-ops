@@ -16,12 +16,12 @@ jobs:
 
       - name: set up python env
         uses: actions/setup-python@v2
-        
-      - name: install npm   
+
+      - name: install npm
         uses: actions/setup-node@v1
         with:
           node-version: '16'
-          
+
       - name: install vega
         run: |
           npm install -g vega-cli vega-lite
@@ -82,13 +82,13 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "## Model metrics diff" >> report.md
-          dvc metrics diff --show-md main >> report.md
+          dvc metrics diff main --show-md >> report.md
 
           echo "## ROC-AUC Curve" >> report.md
           dvc plots diff --target reports/metrics/plots.json \
-            -x tpr \
-            -y fpr \
-            --show-vega HEAD^ > vega.json
+            -x fpr \
+            -y tpr \
+            --show-vega main > vega.json
           vl2png vega.json -s 1.5 > plot.png
           cml publish --md plot.png >> report.md
 

@@ -60,19 +60,27 @@ jobs:
           python tests/lint.py --threshold 3
 
       - name: Run dvc
-        run: dvc pull
+        run: |
+          dvc pull
+          dvc repro
+          git fetch --prune
 
       - name: Run tests
         run: pytest
 
-      - name: show dvc metrics
+      - name: show plots
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "## Model metrics" >> report.md
-          cat reports/metrics/metrics.json
+          echo "## Model metrics diff" >> report.md
+          dvc metrics diff --show-md main >> report.md
 
-          echo "## ROC-AUC Curve"
-          # cml-publish roc-auc-curve.png --md >> report.md
+          echo "## ROC-AUC Curve" >> report.md
+          dvc plots diff \
+            -x tpr \
+            -y fpr
+            --show-vega master > vega.json
+          vl2png vega.json -s 1.5 > plot.png
+          cml publish --md plot.png >> report.md
 
           cml send-comment report.md

@@ -37,7 +37,8 @@ stages:
     outs:
       - models/finalized_model.pkl
     metrics:
-      - reports/metrics/hyper_params.json
+      - reports/metrics/hyper_params.json:
+          cache: false
 
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
@@ -46,6 +47,7 @@ stages:
       - models/finalized_model.pkl
       - src/models/validate_model.py
     metrics:
-      - reports/metrics/metrics.json
+      - reports/metrics/metrics.json:
+          cache: false
     plots:
       - reports/metrics/plots.json

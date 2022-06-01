@@ -2,15 +2,11 @@
 import click
 import pickle
 import logging
-
-# import datetime
-
 import pandas as pd
 from pathlib import Path
-from utility import get_project_root
 
 
-root = get_project_root()
+ROOT = Path(__file__).parent.parent.parent
 
 
 @click.command()
@@ -23,9 +19,9 @@ def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
     logger = logging.getLogger(__name__)
     logger.info("Start predicting process")
 
-    path_to_dataset = root / Path(path_to_dataset)
-    path_to_model_pkl = root / Path(path_to_model_pkl)
-    path_to_predictions_storage = root / Path(path_to_predictions_storage)
+    path_to_dataset = ROOT / Path(path_to_dataset)
+    path_to_model_pkl = ROOT / Path(path_to_model_pkl)
+    path_to_predictions_storage = ROOT / Path(path_to_predictions_storage)
 
     # read dataset
     x_test = pd.read_csv(path_to_dataset)
@@ -38,8 +34,6 @@ def main(path_to_dataset, path_to_model_pkl, path_to_predictions_storage):
         svc = pickle.load(f)
 
     predictions = pd.DataFrame(data=svc.predict(x_test), columns=["wine_quality"])
-
-    # current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
     predictions.to_csv(path_to_predictions_storage / "predictions.csv")
 

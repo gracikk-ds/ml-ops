@@ -85,7 +85,7 @@ jobs:
           dvc metrics diff --show-md main >> report.md
 
           echo "## ROC-AUC Curve" >> report.md
-          dvc plots show --target reports/metrics/plots.json \
+          dvc plots diff --target reports/metrics/plots.json \
             -x tpr \
             -y fpr \
             --show-vega HEAD^ > vega.json

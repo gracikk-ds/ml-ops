@@ -5,8 +5,8 @@ import pickle
 import logging
 import pandas as pd
 from pathlib import Path
-from sklearn.metrics import classification_report
-from src.utils import get_project_root
+from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
+from utility import get_project_root
 
 
 root = get_project_root()
@@ -34,33 +34,32 @@ def main(path_to_dataset, path_to_model_pkl, path_to_metrics_storage):
     y_test = test["target"]
 
     with open(path_to_model_pkl, "rb") as f:
-        svc = pickle.load(f)
+        clf = pickle.load(f)
 
-    predictions = svc.predict(x_test)
+    predictions = clf.predict(x_test)
+    predictions_proba = clf.predict_proba(x_test)
 
     # Let's see how our model performed
-    metrics = classification_report(y_test, predictions, output_dict=True)
+    precision = precision_score(y_test.values, predictions)
+    recall = precision_score(y_test.values, predictions)
+    roc_auc = roc_auc_score(y_test.values, predictions_proba[:, 1])
+    fpr, tpr, _ = roc_curve(y_test.values, predictions_proba[:, 1])
 
-    metrics_per_class_0 = metrics["0"]
-    metrics_per_class_1 = metrics["1"]
-    accuracy = {"accuracy": metrics["accuracy"]}
-    macro_avg = metrics["macro avg"]
-    weighted_avg = metrics["weighted avg"]
+    metrics = {
+        "train": {
+            "precision": precision,
+            "recall": recall,
+            "roc_auc": roc_auc,
+        }
+    }
 
-    with open(
-        str(path_to_metrics_storage / "metrics_per_class_0.json"), "w"
-    ) as handler:
-        json.dump(metrics_per_class_0, handler)
-    with open(
-        str(path_to_metrics_storage / "metrics_per_class_1.json"), "w"
-    ) as handler:
-        json.dump(metrics_per_class_1, handler)
-    with open(str(path_to_metrics_storage / "accuracy.json"), "w") as handler:
-        json.dump(accuracy, handler)
-    with open(str(path_to_metrics_storage / "macro_avg.json"), "w") as handler:
-        json.dump(macro_avg, handler)
-    with open(str(path_to_metrics_storage / "weighted_avg.json"), "w") as handler:
-        json.dump(weighted_avg, handler)
+    plots = {"train": [{"tpr": i, "fpr": j} for i, j in zip(tpr, fpr)]}
+
+    with open(str(path_to_metrics_storage / "metrics.json"), "w") as handler:
+        json.dump(metrics, handler)
+
+    with open(str(path_to_metrics_storage / "plots.json"), "w") as handler:
+        json.dump(plots, handler)
 
     logger.info("done!")
 

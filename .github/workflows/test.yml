@@ -16,6 +16,15 @@ jobs:
 
       - name: set up python env
         uses: actions/setup-python@v2
+        
+      - name: install npm   
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+          
+      - name: install vega
+        run: |
+          npm install -g vega-cli vega-lite
 
       - name: set up cml
         uses: iterative/setup-cml@v1
@@ -54,18 +63,33 @@ jobs:
           git checkout $GITHUB_HEAD_REF
           git commit -am "fixup: Format Python code with Black"
           git push
-          
+
       - name: Run Pylint
         run: |
-          python tests/lint.py --threshold 4  # add output string to report.md
+          python tests/lint.py --threshold 3
 
-#       - name: Run dvc
-#         run: dvc pull
+      - name: Run dvc
+        run: |
+          dvc pull
+          dvc repro
+          git fetch --prune
 
-#       - name: Run tests
-#         run: pytest
+#      - name: Run tests
+#        run: pytest
 
-      - name: send comments
+      - name: show plots
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: cml send-comment report.md
+        run: |
+          echo "## Model metrics diff" >> report.md
+          dvc metrics diff --show-md main >> report.md
+
+          echo "## ROC-AUC Curve" >> report.md
+          dvc plots diff --target reports/metrics/plots.json \
+            -x tpr \
+            -y fpr \
+            --show-vega HEAD^ > vega.json
+          vl2png vega.json -s 1.5 > plot.png
+          cml publish --md plot.png >> report.md
+
+          cml send-comment report.md

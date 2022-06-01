@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 from pathlib import Path
 from matplotlib import pyplot as plt
-from src.utils import get_project_root
+from utility import get_project_root
 
 
 root = get_project_root()

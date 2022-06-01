@@ -66,7 +66,7 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: c0f077c12a4c72f536903e9e59d7f0e6
+      md5: 1050ae42542c03ee0dc35e66b8840293
       size: 2744
     params:
       params.yaml:
@@ -78,11 +78,11 @@ stages:
         - l2
     outs:
     - path: models/finalized_model.pkl
-      md5: b00ceb7c6a6b65efffac24c0267ef538
+      md5: 94834c0d519fa54fb827df9e4030be45
       size: 1083
     - path: reports/metrics/hyper_params.json
-      md5: c87373c9e893b639bffb43bcd14530b2
-      size: 42
+      md5: 9a146810d9cbdafa96e9e62539211744
+      size: 43
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
       --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
@@ -91,15 +91,15 @@ stages:
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: models/finalized_model.pkl
-      md5: b00ceb7c6a6b65efffac24c0267ef538
+      md5: 94834c0d519fa54fb827df9e4030be45
       size: 1083
     - path: src/models/validate_model.py
       md5: d220489259e843edef74d0d60704c454
       size: 2206
     outs:
     - path: reports/metrics/metrics.json
-      md5: 2f15e2c2e82b7b08425471d04e2464fa
+      md5: b5c0e54426608ac2f51a6fdd1e0dc7b8
       size: 105
     - path: reports/metrics/plots.json
-      md5: cbf94ab24449b19ae5ce6c161f8ec828
-      size: 2984
+      md5: 67a88f7e38409e42c1c9f7faf02d8563
+      size: 3226

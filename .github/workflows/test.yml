@@ -77,7 +77,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - nama: Run Black
+      - name: Run Black
         working-directory: Module 2. Data governance
         run: black .
 
@@ -124,6 +124,6 @@ jobs:
           vl2png vega.json -s 1.5 > plot.png
           cml publish --md plot.png >> report.md
 
-          echo "## Feature Importance SHAP" >> report.md
+          echo "## Feature Importance SHAP values" >> report.md
           cml publish --md reports/features_importance/shap_values.png >> report.md
           cml send-comment report.md

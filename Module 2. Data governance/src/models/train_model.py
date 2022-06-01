@@ -28,7 +28,7 @@ def objective(trial, params, x_train, y_train):
     clf = LogisticRegression(solver="liblinear", penalty=penalty, C=c)
 
     target = cross_val_score(
-        clf, x_train, y_train, n_jobs=-1, cv=3, scoring="f1_weighted"
+        clf, x_train, y_train, n_jobs=-1, cv=3, scoring="precision"
     ).mean()
 
     return target
@@ -62,7 +62,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
 
     obj_partial = partial(objective, params=params, x_train=x_train, y_train=y_train)
 
-    study = optuna.create_study(direction="minimize")
+    study = optuna.create_study(direction="maximize")
     study.optimize(obj_partial, n_trials=10)
 
     trial = study.best_trial

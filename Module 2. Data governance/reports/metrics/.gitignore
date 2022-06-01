@@ -5,3 +5,5 @@
 /metrics_per_class_1.json
 /accuracy.json
 /hyper_params.json
+/metrics.json
+/plots.json

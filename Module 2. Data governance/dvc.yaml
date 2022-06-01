@@ -36,6 +36,7 @@ stages:
       - src/models/train_model.py
     outs:
       - models/finalized_model.pkl
+      - reports/features_importance/shap_values.png
     metrics:
       - reports/metrics/hyper_params.json:
           cache: false

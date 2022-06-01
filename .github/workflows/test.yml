@@ -57,7 +57,7 @@ jobs:
 
       - name: Run Pylint
         run: |
-          python tests/lint.py --threshold 4  # add output string to report.md
+          python tests/lint.py --threshold 3
 
       - name: Run dvc
         run: dvc pull
@@ -73,6 +73,6 @@ jobs:
           cat reports/metrics/metrics.json
 
           echo "## ROC-AUC Curve"
-          cml-publish roc-auc-curve.png --md >> report.md
+          # cml-publish roc-auc-curve.png --md >> report.md
 
           cml send-comment report.md

@@ -41,7 +41,7 @@ def main(path_to_dataset, path_to_model_pkl, path_to_metrics_storage):
 
     # Let's see how our model performed
     precision = precision_score(y_test.values, predictions)
-    recall = precision_score(y_test.values, predictions)
+    recall = recall_score(y_test.values, predictions)
     roc_auc = roc_auc_score(y_test.values, predictions_proba[:, 1])
     fpr, tpr, _ = roc_curve(y_test.values, predictions_proba[:, 1])
 

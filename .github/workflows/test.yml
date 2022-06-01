@@ -16,6 +16,15 @@ jobs:
 
       - name: set up python env
         uses: actions/setup-python@v2
+        
+      - name: install npm   
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+          
+      - name: install vega
+        run: |
+          npm install -g vega-cli vega-lite
 
       - name: set up cml
         uses: iterative/setup-cml@v1

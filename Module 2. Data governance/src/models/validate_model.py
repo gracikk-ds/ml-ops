@@ -61,7 +61,7 @@ def main(path_to_dataset, path_to_model_pkl, path_to_metrics_storage):
     with open(str(path_to_metrics_storage / "plots.json"), "w") as handler:
         json.dump(plots, handler)
 
-    logger.info("done!")
+    logger.info("Done!")
 
 
 if __name__ == "__main__":

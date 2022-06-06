@@ -12,13 +12,13 @@ from functools import partial
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
-from utility import get_project_root
 
 
-root = get_project_root()
+ROOT = Path(__file__).parent.parent.parent
 
 
 def objective(trial, params, x_train, y_train):
+    """Run optuna trials"""
     penalty = trial.suggest_categorical("penalty", params["penalty"])
     c = trial.suggest_float(
         "C",
@@ -46,9 +46,9 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     logger = logging.getLogger(__name__)
     logger.info("Start model training process")
 
-    path_to_dataset = root / Path(path_to_dataset)
-    path_to_model_storage = root / Path(path_to_model_storage)
-    path_to_metrics_storage = root / Path(path_to_metrics_storage)
+    path_to_dataset = ROOT / Path(path_to_dataset)
+    path_to_model_storage = ROOT / Path(path_to_model_storage)
+    path_to_metrics_storage = ROOT / Path(path_to_metrics_storage)
 
     # read dataset
     train = pd.read_csv(path_to_dataset)
@@ -58,14 +58,13 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     y_train = train["target"]
 
     # save best params
-    with open(root / Path("params.yaml"), "r") as stream:
+    with open(ROOT / Path("params.yaml"), "r") as stream:
         params = yaml.safe_load(stream)["train"]
-        print(params)
 
     obj_partial = partial(objective, params=params, x_train=x_train, y_train=y_train)
 
     study = optuna.create_study(direction="maximize")
-    study.optimize(obj_partial, n_trials=200)
+    study.optimize(obj_partial, n_trials=250)
 
     trial = study.best_trial
 
@@ -81,7 +80,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     # summarize the effects of all the features
     shap.plots.beeswarm(shap_values, show=False)
     plt.savefig(
-        root / "reports/features_importance/shap_values.png",
+        ROOT / "reports/features_importance/shap_values.png",
         format="png",
         dpi=150,
         bbox_inches="tight",

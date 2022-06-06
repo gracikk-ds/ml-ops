@@ -5,24 +5,24 @@ import pandas as pd
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
-from utility import get_project_root
 
 
-root = get_project_root()
+ROOT = Path(__file__).parent.parent.parent
 
 
 @click.command()
 @click.option("--input_filepath", default="data/raw/winequality-red.csv", type=str)
 @click.option("--output_filepath", default="data/processed/", type=str)
 def make_dataset(input_filepath, output_filepath):
-    """Runs data processing scripts to turn raw data from (../raw) into
+    """
+    Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
     logger.info("making final data set from raw data")
 
-    input_filepath = root / Path(input_filepath)
-    output_filepath = root / Path(output_filepath)
+    input_filepath = ROOT / Path(input_filepath)
+    output_filepath = ROOT / Path(output_filepath)
 
     # Making binary classificaion for the response variable.
     # Dividing wine as good and bad by giving the limit for the quality

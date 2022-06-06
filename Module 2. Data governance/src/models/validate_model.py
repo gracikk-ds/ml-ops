@@ -6,10 +6,9 @@ import logging
 import pandas as pd
 from pathlib import Path
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
-from utility import get_project_root
 
 
-root = get_project_root()
+ROOT = Path(__file__).parent.parent.parent
 
 
 @click.command()
@@ -22,9 +21,9 @@ def main(path_to_dataset, path_to_model_pkl, path_to_metrics_storage):
     logger = logging.getLogger(__name__)
     logger.info("Start predicting process")
 
-    path_to_dataset = root / Path(path_to_dataset)
-    path_to_model_pkl = root / Path(path_to_model_pkl)
-    path_to_metrics_storage = root / Path(path_to_metrics_storage)
+    path_to_dataset = ROOT / Path(path_to_dataset)
+    path_to_model_pkl = ROOT / Path(path_to_model_pkl)
+    path_to_metrics_storage = ROOT / Path(path_to_metrics_storage)
 
     # read dataset
     test = pd.read_csv(path_to_dataset)

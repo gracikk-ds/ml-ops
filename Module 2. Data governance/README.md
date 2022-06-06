@@ -1,7 +1,33 @@
-Data Governance Project
+Data Governance, Experiment tracking and Model Deployment Project
 ==============================
+The tasks of the project could be divided into 4 main parts:
 
-dvc practice
+**Part 1 - Data Governance:**
+* Make an initial setup using `Data version control` tool and add a dataset, so another could obtain it via `dvc pull`
+* Define a DVC pipeline that will:
+  * preprocess data
+  * train a model
+  * evaluate the model
+  * generate a feature importance plot with a model agnostic method
+  The pipeline should be reproducible using `dvc repro`
+* Run experiments and save metrics using `dvc metrics`
+
+**Part 2 - CICD, testing:**
+* Create unit tests for python code from Part 1
+* Create a `github action` which at least performs:
+    * code quality check:
+    * auto-formatting with black
+    * linting with pylint - fail if less than a threshold example
+    * run unit tests
+
+**Part 3 -  Experiment tracking:**
+* Conduct several experiments:
+  * use different features
+  * hyperparameter search
+  * different models
+* Results of each experiment should be tracked in MLFlow
+* Best model artifacts should be logged as well
+
 
 Project Organization
 ------------

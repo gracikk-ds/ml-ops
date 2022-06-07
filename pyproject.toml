@@ -18,6 +18,7 @@ great-expectations = "^0.15.7"
 pylint = "^2.13.9"
 optuna = "^2.10.0"
 shap = "^0.40.0"
+mlflow = "^1.26.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "4.0.1"

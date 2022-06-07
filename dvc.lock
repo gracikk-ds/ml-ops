@@ -8,8 +8,8 @@ stages:
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
     - path: src/data/make_dataset.py
-      md5: 62f299e548ec7a43e28849abbf63dc22
-      size: 2272
+      md5: b06e7d01173137c1f4a38fdff0ff1384
+      size: 2257
     outs:
     - path: data/processed/test.csv
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
@@ -25,36 +25,36 @@ stages:
       md5: 6a883fd98624e18c0b7ce251f4fab4fb
       size: 100951
     - path: src/visualization/visualize.py
-      md5: 9fcd34d091679f413e9e9bed80380c2c
-      size: 3165
+      md5: 6e89cc421a343e08841443122d292257
+      size: 3183
     outs:
     - path: reports/figures/alcohol.png
-      md5: 7b007be746665f630d0361fe91c1f523
-      size: 10880
+      md5: 8c1c5d1cd84a4adf02fcf0bb3e47089a
+      size: 10902
     - path: reports/figures/chlorides.png
-      md5: e37003a895f7e52996f0d93b178c50fd
-      size: 15349
+      md5: b7b793d751cb73a91130429f2ca27be2
+      size: 15387
     - path: reports/figures/citric_acid.png
-      md5: db4c24ff77acc424043dfecfa874326c
-      size: 12168
+      md5: 9989fc52f441791575520d4db048c701
+      size: 12171
     - path: reports/figures/fixed_acidity.png
-      md5: 9cd0ad43edddd965631105ba84db60ab
-      size: 11445
+      md5: d18f3568761e7237f7104c3040246010
+      size: 11441
     - path: reports/figures/free_sulfur_dioxide.png
-      md5: 658a0a6ba3543a3f57627f1c493c9b77
-      size: 14904
+      md5: c5e152adc569fe0714ee76331c3909d3
+      size: 14895
     - path: reports/figures/residual_sugar.png
-      md5: 497bfe3bab75756b5a98df22d5fec886
-      size: 13847
+      md5: 65ea2f575dd652a48f287c222aee2537
+      size: 13852
     - path: reports/figures/sulphates.png
-      md5: 32dfa2e9bdf7380c261620d9b75ad3c6
-      size: 14070
+      md5: 58fb4698fc4a1c2822f4fa52cf5c1729
+      size: 14107
     - path: reports/figures/total_sulfur_dioxide.png
-      md5: cde7b46e32846606afe61e78fbee997b
-      size: 13835
+      md5: eb011abf6169a5dcde524966bc667528
+      size: 13800
     - path: reports/figures/volatile_acidity.png
-      md5: d0f6c0562a725af07fb8aca4959d9876
-      size: 13254
+      md5: 0678364c20c3a714c7d5ad5e1d73ce45
+      size: 13253
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
       --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
@@ -66,8 +66,8 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: 88b31882fcc2377d2683e338b7e05120
-      size: 3136
+      md5: 659b1ead8b6a1b52938ee9ba4414585f
+      size: 3122
     params:
       params.yaml:
         train.C:
@@ -78,13 +78,13 @@ stages:
         - l2
     outs:
     - path: models/finalized_model.pkl
-      md5: 96bf7dfe9a0bdaf5d8f31cf780d4521f
+      md5: dd9d42e0cc0ad1bc5de2f72d52fe7614
       size: 1083
     - path: reports/features_importance/shap_values.png
-      md5: d60cc50cb95cc22fbc8f387fa6a7bb6f
-      size: 109203
+      md5: 710a8ab1d608df1cb9fcad1c4a837c9f
+      size: 107255
     - path: reports/metrics/hyper_params.json
-      md5: 85b8db8dab764cb2beadb14bb6fd8c94
+      md5: b8a2a00e82465d44d2b76d2e64fb5943
       size: 43
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
@@ -94,15 +94,15 @@ stages:
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: models/finalized_model.pkl
-      md5: 96bf7dfe9a0bdaf5d8f31cf780d4521f
+      md5: dd9d42e0cc0ad1bc5de2f72d52fe7614
       size: 1083
     - path: src/models/validate_model.py
-      md5: e50e1ddd3de1fc857c36b54c5c457672
-      size: 2203
+      md5: 809e0cc6c2f04385c46bceb2edc39352
+      size: 2183
     outs:
     - path: reports/metrics/metrics.json
-      md5: b7729fa5901a0c9e2c3b11b05ee81136
-      size: 105
+      md5: 42ce9a4c9ab63d216a5a5ef7c50f4af1
+      size: 106
     - path: reports/metrics/plots.json
-      md5: 8d1dfce4b39af4df275539e8b5eee38d
-      size: 3110
+      md5: cc82a07c1bab64a3c543b6c7ac2b56d5
+      size: 2878

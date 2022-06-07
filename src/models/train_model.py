@@ -64,7 +64,7 @@ def main(path_to_dataset, path_to_model_storage, path_to_metrics_storage):
     obj_partial = partial(objective, params=params, x_train=x_train, y_train=y_train)
 
     study = optuna.create_study(direction="maximize")
-    study.optimize(obj_partial, n_trials=250)
+    study.optimize(obj_partial, n_trials=200)
 
     trial = study.best_trial
 

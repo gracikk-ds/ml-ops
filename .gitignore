@@ -5,9 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
-./docker/minio
+./docker/minio/
 ./docker/pgadmin/
-./docker/postgres
+./docker/postgres/
 
 # Distribution / packaging
 .Python

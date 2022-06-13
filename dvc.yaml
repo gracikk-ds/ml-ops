@@ -26,7 +26,7 @@ stages:
       - data/processed/test.csv
 
   train_the_model:
-    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
+    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
     params:
       - train.C
       - train.penalty
@@ -35,17 +35,13 @@ stages:
       - data/processed/train.csv
       - src/models/train_model.py
     outs:
-      - models/finalized_model.pkl
       - reports/features_importance/shap_values.png
-    metrics:
-      - reports/metrics/hyper_params.json:
-          cache: false
 
   evaluation:
-    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
+    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_metrics_storage reports/metrics
     deps:
+      - reports/features_importance/shap_values.png
       - data/processed/test.csv
-      - models/finalized_model.pkl
       - src/models/validate_model.py
     metrics:
       - reports/metrics/metrics.json:

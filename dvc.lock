@@ -57,7 +57,6 @@ stages:
       size: 13253
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
-      --path_to_model_storage models/ --path_to_metrics_storage reports/metrics
     deps:
     - path: data/processed/train.csv
       md5: 84808f9205454b9a4ec584f2786c6fc6
@@ -66,8 +65,8 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: 659b1ead8b6a1b52938ee9ba4414585f
-      size: 3122
+      md5: 65ffe004793e9472ed0528032fad72a6
+      size: 4604
     params:
       params.yaml:
         train.C:
@@ -77,32 +76,26 @@ stages:
         - l1
         - l2
     outs:
-    - path: models/finalized_model.pkl
-      md5: dd9d42e0cc0ad1bc5de2f72d52fe7614
-      size: 1083
     - path: reports/features_importance/shap_values.png
-      md5: 710a8ab1d608df1cb9fcad1c4a837c9f
-      size: 107255
-    - path: reports/metrics/hyper_params.json
-      md5: b8a2a00e82465d44d2b76d2e64fb5943
-      size: 43
+      md5: 731b84cf1f103fecdcff641011941e1b
+      size: 103708
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
-      --path_to_model_pkl models/finalized_model.pkl --path_to_metrics_storage reports/metrics
+      --path_to_metrics_storage reports/metrics
     deps:
     - path: data/processed/test.csv
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
-    - path: models/finalized_model.pkl
-      md5: dd9d42e0cc0ad1bc5de2f72d52fe7614
-      size: 1083
+    - path: reports/features_importance/shap_values.png
+      md5: 731b84cf1f103fecdcff641011941e1b
+      size: 103708
     - path: src/models/validate_model.py
-      md5: 809e0cc6c2f04385c46bceb2edc39352
-      size: 2183
+      md5: 1dc71e69c0148552cc56e385f78fbbc4
+      size: 3246
     outs:
     - path: reports/metrics/metrics.json
-      md5: 42ce9a4c9ab63d216a5a5ef7c50f4af1
-      size: 106
+      md5: f2faaa2c195cd5b107a4652e4670a4cb
+      size: 105
     - path: reports/metrics/plots.json
-      md5: cc82a07c1bab64a3c543b6c7ac2b56d5
-      size: 2878
+      md5: 1c28b87265f8e9e77b89283acf8158bf
+      size: 4121

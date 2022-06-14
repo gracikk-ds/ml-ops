@@ -16,7 +16,7 @@ def test_cli_command():
             "--registered_model_name",
             "test_run_model",
             "--experiment_name",
-            "test_run_experiment"
+            "test_run_experiment",
         ],
     )
     assert result.exit_code == 0

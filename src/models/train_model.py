@@ -69,7 +69,9 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         with open(ROOT / Path("params.yaml"), "r") as stream:
             params = yaml.safe_load(stream)["train"]
 
-        obj_partial = partial(objective, params=params, x_train=x_train, y_train=y_train)
+        obj_partial = partial(
+            objective, params=params, x_train=x_train, y_train=y_train
+        )
 
         study = optuna.create_study(direction="maximize")
         study.optimize(obj_partial, n_trials=200)
@@ -78,7 +80,7 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         client = MlflowClient()
         runs = client.search_runs(
             [experiment_id],
-            "tags.mlflow.parentRunId = '{run_id}' ".format(run_id=run.info.run_id)
+            "tags.mlflow.parentRunId = '{run_id}' ".format(run_id=run.info.run_id),
         )
 
         best_metric = 0
@@ -102,10 +104,7 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         )
 
         mlflow.log_params(
-            {
-                "C": best_run.data.params["C"],
-                "penalty": best_run.data.params["penalty"]
-            }
+            {"C": best_run.data.params["C"], "penalty": best_run.data.params["penalty"]}
         )
 
         # Let's run SVC again with the best parameters.

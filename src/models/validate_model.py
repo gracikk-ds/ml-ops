@@ -21,8 +21,9 @@ ROOT = Path(__file__).parent.parent.parent
 @click.command()
 @click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
 @click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
+@click.option("--registered_model_name", default="default_model", type=str)
 @click.option("--experiment_name", default=None)
-def main(path_to_dataset, path_to_metrics_storage, experiment_name):
+def main(path_to_dataset, path_to_metrics_storage, registered_model_name, experiment_name):
     """Runs validation method"""
     client = MlflowClient()
 
@@ -53,10 +54,10 @@ def main(path_to_dataset, path_to_metrics_storage, experiment_name):
         y_test = test["target"]
 
         latest_version = client.get_latest_versions(
-            "sk-learn-log-reg", stages=["None"]
+            registered_model_name, stages=["None"]
         )[0].version
 
-        clf = mlflow.sklearn.load_model(f"models:/sk-learn-log-reg/{latest_version}")
+        clf = mlflow.sklearn.load_model(f"models:/{registered_model_name}/{latest_version}")
 
         predictions = clf.predict(x_test)
         predictions_proba = clf.predict_proba(x_test)

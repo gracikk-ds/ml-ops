@@ -51,8 +51,10 @@ def objective(trial, params, x_train, y_train):
 
 @click.command()
 @click.option("--path_to_dataset", default="data/processed/train.csv", type=str)
-def main(path_to_dataset):
-    mlflow.set_experiment("linear_model_experiments_1")
+@click.option("--experiment_name", default="default_experiment", type=str)
+@click.option("--registered_model_name", default="default_model", type=str)
+def main(path_to_dataset, experiment_name, registered_model_name):
+    mlflow.set_experiment(experiment_name)
 
     with mlflow.start_run() as run:
         """Runs training job and save best model to model's storage"""
@@ -69,8 +71,6 @@ def main(path_to_dataset):
 
         # Now separate the dataset as response variable and feature variables
         x_train = train.drop("target", axis=1)
-
-        print(x_train.head())
         y_train = train["target"]
 
         # save best params
@@ -126,7 +126,7 @@ def main(path_to_dataset):
         mlflow.sklearn.log_model(
             sk_model=clf,
             artifact_path="sklearn-model",
-            registered_model_name="sk-learn-log-reg",
+            registered_model_name=registered_model_name,
             signature=signature,
         )
 
@@ -141,7 +141,7 @@ def main(path_to_dataset):
             dpi=150,
             bbox_inches="tight",
         )
-
+        mlflow.log_artifact(str(ROOT / "reports/features_importance/shap_values.png"))
         logger.info("done!")
 
 

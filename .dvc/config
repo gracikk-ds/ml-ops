@@ -1,8 +1,0 @@
-[core]
-    remote = storage
-    autostage = true
-['remote "storage"']
-    url = s3://ml-ops
-    endpointurl = http://localhost:9000
-    access_key_id = minioadmin
-    secret_access_key = minioadmin

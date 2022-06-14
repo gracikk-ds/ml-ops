@@ -65,8 +65,8 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: 65ffe004793e9472ed0528032fad72a6
-      size: 4604
+      md5: fd40d271da4cf43a74643f24c0e05807
+      size: 4840
     params:
       params.yaml:
         train.C:
@@ -77,8 +77,8 @@ stages:
         - l2
     outs:
     - path: reports/features_importance/shap_values.png
-      md5: 731b84cf1f103fecdcff641011941e1b
-      size: 103708
+      md5: ccb9e437815c3158fda4468d6f97ff24
+      size: 104784
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
       --path_to_metrics_storage reports/metrics
@@ -87,11 +87,11 @@ stages:
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: reports/features_importance/shap_values.png
-      md5: 731b84cf1f103fecdcff641011941e1b
-      size: 103708
+      md5: ccb9e437815c3158fda4468d6f97ff24
+      size: 104784
     - path: src/models/validate_model.py
-      md5: 1dc71e69c0148552cc56e385f78fbbc4
-      size: 3246
+      md5: 4ee9c84476504a6e6e529f576ad56672
+      size: 3341
     outs:
     - path: reports/metrics/metrics.json
       md5: f2faaa2c195cd5b107a4652e4670a4cb

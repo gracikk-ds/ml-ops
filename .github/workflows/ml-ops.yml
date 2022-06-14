@@ -118,7 +118,7 @@ jobs:
           dvc remote modify origin --project password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
           dvc remote default origin
 
-      - name: Run unit tests and dvc repro
+      - name: Run and dvc repro
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MLFLOW_TRACKING_USERNAME: gracikk-ds

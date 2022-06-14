@@ -106,10 +106,12 @@ jobs:
 
       - name: Run Pylint
         run: |
+          source .venv/bin/activate
           python tests/lint.py --threshold 3
 
       - name: setup dvc
         run: |
+          source .venv/bin/activate
           dvc remote modify origin --local auth basic
           dvc remote modify origin --local user gracikk-ds
           dvc remote modify origin --local password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
@@ -121,6 +123,7 @@ jobs:
           MLFLOW_TRACKING_PASSWORD: 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
           MLFLOW_TRACKING_URI: https://dagshub.com/gracikk-ds/ml-ops.mlflow
         run: |
+          source .venv/bin/activate
           dvc pull
           dvc repro
           git fetch --prune
@@ -129,6 +132,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          source .venv/bin/activate
           echo "## Model metrics diff" >> report.md
           dvc metrics diff main --show-md >> report.md
 

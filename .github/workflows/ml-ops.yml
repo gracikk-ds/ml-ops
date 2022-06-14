@@ -115,6 +115,9 @@ jobs:
       - name: Run unit tests and dvc repro
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MLFLOW_TRACKING_USERNAME: gracikk-ds
+          MLFLOW_TRACKING_PASSWORD: 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
+          MLFLOW_TRACKING_URI: https://dagshub.com/gracikk-ds/ml-ops.mlflow
         run: |
           dvc pull
           dvc repro

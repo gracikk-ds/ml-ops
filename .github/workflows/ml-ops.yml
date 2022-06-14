@@ -116,6 +116,7 @@ jobs:
           dvc remote modify origin --project auth basic
           dvc remote modify origin --project user gracikk-ds
           dvc remote modify origin --project password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
+          dvc remote default origin
 
       - name: Run unit tests and dvc repro
         env:

@@ -11,13 +11,6 @@ from mlflow.tracking.client import MlflowClient
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
 
 
-load_dotenv()
-remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
-mlflow.set_tracking_uri(remote_server_uri)
-
-ROOT = Path(__file__).parent.parent.parent
-
-
 @click.command()
 @click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
 @click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
@@ -30,16 +23,20 @@ def main(path_to_dataset, path_to_metrics_storage, registered_model_name, experi
     if experiment_name is None:
 
         experiments = client.list_experiments()
+        print(experiments)
         current_experiment = experiments[-1]
         df = mlflow.search_runs([current_experiment.experiment_id])
-        run_id = df.run_id.values[-1]
+        df.sort_values(by="start_time", inplace=True)
+        print(df.loc[:, ["run_id", "experiment_id", "start_time"]])
+        run_id = df.run_id.values[-2]
 
     else:
         current_experiment = mlflow.get_experiment_by_name(experiment_name)
         df = mlflow.search_runs([current_experiment.experiment_id])
-        run_id = df.run_id.values[-1]
+        run_id = df.run_id.values[-2]
 
     with mlflow.start_run(run_id=run_id):
+        print(run_id)
         logger = logging.getLogger(__name__)
         logger.info("Start predicting process")
 
@@ -93,6 +90,12 @@ def main(path_to_dataset, path_to_metrics_storage, registered_model_name, experi
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
+    mlflow.set_tracking_uri(remote_server_uri)
+
+    ROOT = Path(__file__).parent.parent.parent
+
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
     main()

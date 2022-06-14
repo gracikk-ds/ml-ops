@@ -2,7 +2,6 @@
 import os
 import shap
 import yaml
-import json
 import click
 import mlflow
 import optuna
@@ -16,13 +15,6 @@ from mlflow.models import infer_signature
 from mlflow.tracking.client import MlflowClient
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
-
-
-load_dotenv()
-remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
-mlflow.set_tracking_uri(remote_server_uri)
-
-ROOT = Path(__file__).parent.parent.parent
 
 
 def objective(trial, params, x_train, y_train):
@@ -141,11 +133,18 @@ def main(path_to_dataset, experiment_name, registered_model_name):
             dpi=150,
             bbox_inches="tight",
         )
+
         mlflow.log_artifact(str(ROOT / "reports/features_importance/shap_values.png"))
         logger.info("done!")
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
+    mlflow.set_tracking_uri(remote_server_uri)
+
+    ROOT = Path(__file__).parent.parent.parent
+
     log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
     main()

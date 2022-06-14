@@ -3,34 +3,34 @@ on: [push]
 
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
-    outputs:
-      module_1: ${{ steps.filter.outputs.module_1 }}
-      module_2: ${{ steps.filter.outputs.module_2 }}
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          module_1:
-            - 'Module 1. Containerization/**'
-          module_2:
-            - 'Module 2. Data governance/**'
-
-    - name: show the directory
-      if: steps.filter.outputs.module_2 == 'true'
-      run: |
-        echo "good job, module 2!"
+#  changes:
+#    runs-on: ubuntu-latest
+#    # Set job outputs to values from filter step
+#    outputs:
+#      module_1: ${{ steps.filter.outputs.module_1 }}
+#      module_2: ${{ steps.filter.outputs.module_2 }}
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#    - uses: dorny/paths-filter@v2
+#      id: filter
+#      with:
+#        filters: |
+#          module_1:
+#            - 'Module 1. Containerization/**'
+#          module_2:
+#            - 'Module 2. Data governance/**'
+#
+#    - name: show the directory
+#      if: steps.filter.outputs.module_2 == 'true'
+#      run: |
+#        echo "good job, module 2!"
 
 
   job_module_2:
-    name: Job for Module 2
-    needs: changes
-    if: ${{ needs.changes.outputs.module_2 == 'true' }}
+    name: main job
+    # needs: changes
+    # if: ${{ needs.changes.outputs.module_2 == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -52,7 +52,6 @@ jobs:
         uses: iterative/setup-cml@v1
 
       - name: Action summary
-        working-directory: Module 2. Data governance
         run: |
           echo "## Action summary" >> report.md
           echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event." >> report.md
@@ -61,29 +60,39 @@ jobs:
           echo "💡 The ${{ github.repository }} repository has been cloned to the runner." >> report.md
           echo "🖥️ The workflow is now ready to test your code on the runner." >> report.md
 
-      - name: instal dependencies
-        working-directory: Module 2. Data governance
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.10
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Instal dependencies
         run: |
-          pip install poetry
-          poetry config virtualenvs.create false
-          poetry install
+          poetry install --no-interaction
 
       - name: Run flake8
         uses: julianwachholz/flake8-action@v2
         with:
           checkName: "Python Lint"
           path: ./
-          config: ./Module 2. Data governance/tox.ini
+          config: ./tox.ini
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Black
-        working-directory: Module 2. Data governance
         run: black .
 
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}
-        working-directory: Module 2. Data governance
         run: |
           black .
           git config --global user.name 'autoblack'
@@ -94,22 +103,24 @@ jobs:
           git push
 
       - name: Run Pylint
-        working-directory: Module 2. Data governance
         run: |
           python tests/lint.py --threshold 3
 
+      - name: setup dvc
+        run: |
+          dvc remote modify origin --local auth basic
+          dvc remote modify origin --local user gracikk-ds
+          dvc remote modify origin --local password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
+
       - name: Run unit tests and dvc repro
-        working-directory: Module 2. Data governance
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dvc pull
-          pytest
           dvc repro
           git fetch --prune
 
       - name: show plots and metrics
-        working-directory: Module 2. Data governance
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -11,10 +11,12 @@ def test_cli_command():
         [
             "--path_to_dataset",
             "data/processed/test.csv",
-            "--path_to_model_pkl",
-            "models/finalized_model.pkl",
             "--path_to_metrics_storage",
             "reports/metrics",
+            "--registered_model_name",
+            "test_run_model",
+            "--experiment_name",
+            "test_run_experiment"
         ],
     )
     assert result.exit_code == 0

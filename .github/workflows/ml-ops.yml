@@ -77,7 +77,8 @@ jobs:
 
       - name: Instal dependencies
         run: |
-          poetry install --no-interaction
+          source ./.venv/bin/activate
+          poetry install
 
       - name: Run flake8
         uses: julianwachholz/flake8-action@v2

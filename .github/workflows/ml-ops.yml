@@ -112,9 +112,10 @@ jobs:
       - name: setup dvc
         run: |
           source .venv/bin/activate
-          dvc remote modify origin --local auth basic
-          dvc remote modify origin --local user gracikk-ds
-          dvc remote modify origin --local password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
+          dvc remote add origin https://dagshub.com/gracikk-ds/ml-ops.dvc
+          dvc remote modify origin --project auth basic
+          dvc remote modify origin --project user gracikk-ds
+          dvc remote modify origin --project password 87bdb3d5761e99805e6b4eac8a3c7b7096fcddeb
 
       - name: Run unit tests and dvc repro
         env:

@@ -77,7 +77,6 @@ jobs:
 
       - name: Instal dependencies
         run: |
-          source ./.venv/bin/activate
           poetry install
 
       - name: Run flake8
@@ -90,7 +89,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Black
-        run: black .
+        run: |
+          source .venv/bin/activate
+          black .
 
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}

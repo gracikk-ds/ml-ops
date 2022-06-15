@@ -81,6 +81,17 @@ services:
       - MLFLOW_S3_ENDPOINT_URL=http://nginx:9000
     command: mlflow server --backend-store-uri postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB} --default-artifact-root s3://${AWS_S3_BUCKET} --host 0.0.0.0
 
+  training:
+    image: training_scripts_image
+    container_name: training_scripts
+    restart: always
+    networks:
+      - postgres
+      - s3
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    command: /bin/bash
+
 networks:
   s3:
     driver: bridge

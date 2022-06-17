@@ -1,16 +1,15 @@
 [tool.poetry]
 name = "mlops_build"
-version = "0.1.0"
+version = "0.1.1"
 description = "MLops course"
 license = "none"
 readme = "README.md"
 authors = ["gordeev.al <aleksandr_gordeev2@epam.com>"]
 homepage = "https://github.com/gracikk-ds/ml-ops"
 repository = "https://github.com/gracikk-ds/ml-ops"
-keywords = ["flake8", "markdown", "lint"]
+keywords = ["practice", "mlflow", "dvc", "sklearn"]
 classifiers = [
     "Environment :: Console",
-    "Framework :: Model training",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Documentation",
     "Topic :: Software Development :: Libraries :: Python Modules",

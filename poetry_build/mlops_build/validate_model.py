@@ -1,35 +1,50 @@
 # -*- coding: utf-8 -*-
 import os
 import json
-import click
 import mlflow
-import logging
 import pandas as pd
 from pathlib import Path
-from dotenv import load_dotenv
 from mlflow.tracking.client import MlflowClient
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
 
 
-@click.command()
-@click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
-@click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
-@click.option("--registered_model_name", default="default_model", type=str)
-@click.option("--experiment_name", default=None)
 def main(
-    path_to_dataset, path_to_metrics_storage, registered_model_name, experiment_name
-):
-    """Runs validation method"""
+    path_to_dataset: str,
+    path_to_metrics_storage: str,
+    registered_model_name: str,
+    experiment_name: str,
+    dagshub_mlflow_tracking_uri: str,
+    mlflow_tracking_username: str,
+    mlflow_tracking_password: str,
+) -> None:
+    """
+    Runs validation method
+    Args:
+        path_to_dataset: absolute path to your dataset
+        path_to_metrics_storage: absolute path to your metrics storage
+        experiment_name: the name of the experiment for mlflow
+        registered_model_name: the name of th model in mlflow model's registry
+        dagshub_mlflow_tracking_uri: path to mlflow uri provided by dags hub
+        mlflow_tracking_username: dags hub username
+        mlflow_tracking_password: dags hub token
+
+    Returns:
+        object: None
+    """
+
+    os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
+
+    mlflow.set_tracking_uri(dagshub_mlflow_tracking_uri)
+
     client = MlflowClient()
 
     if experiment_name is None:
 
         experiments = client.list_experiments()
-        print(experiments)
         current_experiment = experiments[-1]
         df = mlflow.search_runs([current_experiment.experiment_id])
         df.sort_values(by="start_time", inplace=True)
-        print(df.loc[:, ["run_id", "experiment_id", "start_time"]])
         run_id = df.run_id.values[-2]
 
     else:
@@ -38,12 +53,8 @@ def main(
         run_id = df.run_id.values[-2]
 
     with mlflow.start_run(run_id=run_id):
-        print(run_id)
-        logger = logging.getLogger(__name__)
-        logger.info("Start predicting process")
-
-        path_to_dataset = ROOT / Path(path_to_dataset)
-        path_to_metrics_storage = ROOT / Path(path_to_metrics_storage)
+        path_to_dataset = Path(path_to_dataset)
+        path_to_metrics_storage = Path(path_to_metrics_storage)
 
         # read dataset
         test = pd.read_csv(path_to_dataset).drop(columns=["Unnamed: 0"])
@@ -89,17 +100,3 @@ def main(
 
         with open(str(path_to_metrics_storage / "plots.json"), "w") as handler:
             json.dump(plots, handler)
-
-        logger.info("done!")
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
-    mlflow.set_tracking_uri(remote_server_uri)
-
-    ROOT = Path(__file__).parent.parent.parent
-
-    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-    main()

@@ -39,10 +39,10 @@ model = Model("default_model", "Staging")
 # welcome message.
 @app.get("/")
 async def root():
-    return {"message":
-                "Hello, Dear User! "
-                "You could download file to inference using /invocations endpoint"
-            }
+    return {
+        "message": "Hello, Dear User! "
+        "You could download file to inference using /invocations endpoint"
+    }
 
 
 # Create POST endpoint with path /invocations
@@ -55,8 +55,8 @@ async def upload_file(file: UploadFile = File(...)):
         os.remove(file.filename)
 
         data = data.loc[
-               :, [x for x in list(data.columns) if x not in ["Unnamed: 0", "target"]]
-               ]
+            :, [x for x in list(data.columns) if x not in ["Unnamed: 0", "target"]]
+        ]
 
         predictions = model.inference(data)
 

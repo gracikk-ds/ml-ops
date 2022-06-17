@@ -2,14 +2,11 @@
 import os
 import shap
 import yaml
-import click
 import mlflow
 import optuna
-import logging
 import pandas as pd
 from pathlib import Path
 from functools import partial
-from dotenv import load_dotenv
 from matplotlib import pyplot as plt
 from mlflow.models import infer_signature
 from mlflow.tracking.client import MlflowClient
@@ -17,8 +14,21 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
 
-def objective(trial, params, x_train, y_train):
-    """Run optuna trials"""
+def objective(
+    trial, params: dict, x_train: pd.DataFrame, y_train: pd.DataFrame
+) -> float:
+    """
+    Objective function for optuna optimization
+    Args:
+        trial: optuna object
+        params: run params
+        x_train: features
+        y_train: target
+
+    Returns:
+        target: the value of the metric
+    """
+
     with mlflow.start_run(nested=True):
         penalty = trial.suggest_categorical("penalty", params["penalty"])
         c = trial.suggest_float(
@@ -41,22 +51,44 @@ def objective(trial, params, x_train, y_train):
     return target
 
 
-@click.command()
-@click.option("--path_to_dataset", default="data/processed/train.csv", type=str)
-@click.option("--experiment_name", default="default_experiment", type=str)
-@click.option("--registered_model_name", default="default_model", type=str)
-def main(path_to_dataset, experiment_name, registered_model_name):
+def main(
+    path_to_dataset: str,
+    path_to_params_search_space: str,
+    path_to_save_artifacts: str,
+    experiment_name: str,
+    registered_model_name: str,
+    dagshub_mlflow_tracking_uri: str,
+    mlflow_tracking_username: str,
+    mlflow_tracking_password: str,
+) -> None:
+    """
+    Runs training job and save best model to model's storage
+    Args:
+        path_to_dataset: absolute path to your dataset
+        path_to_params_search_space: absolute path to your yaml files with search params
+        path_to_save_artifacts: absolute path to your artifact storage
+        experiment_name: the name of the experiment for mlflow
+        registered_model_name: the name of th model in mlflow model's registry
+        dagshub_mlflow_tracking_uri: path to mlflow uri provided by dags hub
+        mlflow_tracking_username: dags hub username
+        mlflow_tracking_password: dags hub token
+    Returns:
+        object: None
+    """
+
+    os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
+
+    mlflow.set_tracking_uri(dagshub_mlflow_tracking_uri)
     mlflow.set_experiment(experiment_name)
 
     with mlflow.start_run() as run:
-        """Runs training job and save best model to model's storage"""
 
         experiment_id = run.info.experiment_id
 
-        logger = logging.getLogger(__name__)
-        logger.info("Start model training process")
-
-        path_to_dataset = ROOT / Path(path_to_dataset)
+        path_to_dataset = Path(path_to_dataset)
+        path_to_params_search_space = Path(path_to_params_search_space)
+        path_to_save_artifacts = Path(path_to_save_artifacts)
 
         # read dataset
         train = pd.read_csv(path_to_dataset).drop(columns=["Unnamed: 0"])
@@ -65,8 +97,8 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         x_train = train.drop("target", axis=1)
         y_train = train["target"]
 
-        # save best params
-        with open(ROOT / Path("params.yaml"), "r") as stream:
+        # params space
+        with open(path_to_params_search_space / "params.yaml", "r") as stream:
             params = yaml.safe_load(stream)["train"]
 
         obj_partial = partial(
@@ -127,23 +159,12 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         # summarize the effects of all the features
         shap.plots.beeswarm(shap_values, show=False)
         plt.savefig(
-            ROOT / "reports/features_importance/shap_values.png",
+            path_to_save_artifacts / "reports/features_importance/shap_values.png",
             format="png",
             dpi=150,
             bbox_inches="tight",
         )
 
-        mlflow.log_artifact(str(ROOT / "reports/features_importance/shap_values.png"))
-        logger.info("done!")
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    remote_server_uri = os.getenv("MLFLOW_TRACKING_URI")
-    mlflow.set_tracking_uri(remote_server_uri)
-
-    ROOT = Path(__file__).parent.parent.parent
-
-    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-    main()
+        mlflow.log_artifact(
+            str(path_to_save_artifacts / "reports/features_importance/shap_values.png")
+        )

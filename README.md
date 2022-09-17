@@ -7,21 +7,19 @@ Skills of a machine learning engineer:
 3. The ML Engineer needs familiarity with foundational concepts of application development, infrastructure management, data engineering, and data governance. 
 4. Through an understanding of training, retraining, deploying, scheduling, monitoring, and improving models, the ML Engineer designs and creates scalable solutions for optimal performance.
   
-## Course Goal
+### Course Goal
 
 - Containerize ML solution
-- Version data
+Configure CI/CD
+- Configure version data control system
 - Perform experiment tracking
 - Design ML pipelines
 - Deploy models
 - Test code and ML services
-- CI/CD
 - Create python packages
 
 
-Data Governance, Experiment tracking and Model Deployment Project
-==============================
-The tasks of the project could be divided into 4 main parts:
+### Course modules:
 
 **Part 1 - Data Governance:**
 * Make an initial setup using `Data version control` tool and add a dataset, so another could obtain it via `dvc pull` Solved :white_check_mark:
@@ -50,8 +48,7 @@ The tasks of the project could be divided into 4 main parts:
 * Best model artifacts should be logged as well
 
 
-Project Organization
-------------
+### Project Organization
 
     ├── README.md          <- The top-level README for developers using this project.
     ├── data

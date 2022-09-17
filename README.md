@@ -1,9 +1,12 @@
 ## ML Engineering course by EPAM
 The course includes 6 modules that cover the skills of a machine learning engineer.  
-A Machine Learning Engineer designs, builds, and productionizes ML models to solve business challenges. The ML Engineer should be proficient in all aspects of model architecture, data pipeline interaction, and metrics interpretation. The ML Engineer needs familiarity with foundational concepts of application development, infrastructure management, data engineering, and data governance. Through an understanding of training, retraining, deploying, scheduling, monitoring, and improving models, the ML Engineer designs and creates scalable solutions for optimal performance.
+A Machine Learning Engineer designs, builds, and productionizes ML models to solve business challenges.
+The ML Engineer should be proficient in all aspects of model architecture, data pipeline interaction, and metrics interpretation. 
+The ML Engineer needs familiarity with foundational concepts of application development, infrastructure management, data engineering, and data governance. 
+Through an understanding of training, retraining, deploying, scheduling, monitoring, and improving models, 
+the ML Engineer designs and creates scalable solutions for optimal performance.
   
 ## Course Goal
-After the end of the course you should be able to:
 
 - Containerize ML solution
 - Version data
@@ -11,7 +14,7 @@ After the end of the course you should be able to:
 - Design ML pipelines
 - Deploy models
 - Test code and ML services
-- CICD
+- CI/CD
 - Create python packages
 
 
@@ -20,14 +23,14 @@ Data Governance, Experiment tracking and Model Deployment Project
 The tasks of the project could be divided into 4 main parts:
 
 **Part 1 - Data Governance:**
-* Make an initial setup using `Data version control` tool and add a dataset, so another could obtain it via `dvc pull`
+* Make an initial setup using `Data version control` tool and add a dataset, so another could obtain it via `dvc pull` Solved :white_check_mark:
 * Define a DVC pipeline that will:
-  * preprocess data
-  * train a model
-  * evaluate the model
-  * generate a feature importance plot with a model agnostic method
-  The pipeline should be reproducible using `dvc repro`
-* Run experiments and save metrics using `dvc metrics`
+  * preprocess data Solved :white_check_mark:
+  * train a model Solved :white_check_mark:
+  * evaluate the model Solved :white_check_mark:
+  * generate a feature importance plot with a model agnostic method Solved :white_check_mark:
+* The pipeline should be reproducible using `dvc repro` Solved :white_check_mark:
+* Run experiments and save metrics using `dvc metrics` Solved :white_check_mark:
 
 **Part 2 - CICD, testing:**
 * Create unit tests for python code from Part 1

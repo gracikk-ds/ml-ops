@@ -30,6 +30,7 @@ class Model(object):
         data: pd.DataFrame to perform prediction
         """
         predictions = self.model.predict(data)
+        print("hi!")
         return predictions
 
 
@@ -48,6 +49,7 @@ async def root():
 # Create POST endpoint with path /invocations
 @app.post("/invocations")
 async def upload_file(file: UploadFile = File(...)):
+    print(file)
     if file.filename.endswith(".csv"):
         with open(file.filename, "wb") as f:
             f.write(file.file.read())

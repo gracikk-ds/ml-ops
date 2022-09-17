@@ -26,7 +26,7 @@ stages:
       - data/processed/test.csv
 
   train_the_model:
-    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
+    cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv --experiment_name mlflow
     params:
       - train.C
       - train.penalty
@@ -38,7 +38,7 @@ stages:
       - reports/features_importance/shap_values.png
 
   evaluation:
-    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_metrics_storage reports/metrics
+    cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv --path_to_metrics_storage reports/metrics --experiment_name mlflow
     deps:
       - reports/features_importance/shap_values.png
       - data/processed/test.csv

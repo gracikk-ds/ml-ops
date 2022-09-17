@@ -74,7 +74,7 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         )
 
         study = optuna.create_study(direction="maximize")
-        study.optimize(obj_partial, n_trials=200)
+        study.optimize(obj_partial, n_trials=25)
 
         # find the best run, log its metrics as the final metrics of this run.
         client = MlflowClient()
@@ -95,7 +95,6 @@ def main(path_to_dataset, experiment_name, registered_model_name):
             else:
                 run_id = r.info.run_id
                 mlflow.delete_run(run_id)
-        mlflow.set_tag("params_search_best_run", best_run.info.run_id)
 
         mlflow.log_metrics(
             {
@@ -106,6 +105,9 @@ def main(path_to_dataset, experiment_name, registered_model_name):
         mlflow.log_params(
             {"C": best_run.data.params["C"], "penalty": best_run.data.params["penalty"]}
         )
+
+        run_id = best_run.info.run_id
+        mlflow.delete_run(run_id)
 
         # Let's run SVC again with the best parameters.
         clf = LogisticRegression(solver="liblinear", **study.best_trial.params)

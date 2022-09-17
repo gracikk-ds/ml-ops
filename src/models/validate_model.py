@@ -15,7 +15,7 @@ from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_cu
 @click.option("--path_to_dataset", default="data/processed/test.csv", type=str)
 @click.option("--path_to_metrics_storage", default="reports/metrics", type=str)
 @click.option("--registered_model_name", default="default_model", type=str)
-@click.option("--experiment_name", default=None)
+@click.option("--experiment_name", default="default_experiment")
 def main(
     path_to_dataset, path_to_metrics_storage, registered_model_name, experiment_name
 ):
@@ -25,20 +25,20 @@ def main(
     if experiment_name is None:
 
         experiments = client.list_experiments()
-        print(experiments)
         current_experiment = experiments[-1]
         df = mlflow.search_runs([current_experiment.experiment_id])
         df.sort_values(by="start_time", inplace=True)
-        print(df.loc[:, ["run_id", "experiment_id", "start_time"]])
-        run_id = df.run_id.values[-2]
+        df.reset_index(inplace=True, drop=True)
+        run_id = df.run_id.values[-1]
 
     else:
         current_experiment = mlflow.get_experiment_by_name(experiment_name)
         df = mlflow.search_runs([current_experiment.experiment_id])
-        run_id = df.run_id.values[-2]
+        df.sort_values(by="start_time", inplace=True)
+        df.reset_index(inplace=True, drop=True)
+        run_id = df.run_id.values[-1]
 
     with mlflow.start_run(run_id=run_id):
-        print(run_id)
         logger = logging.getLogger(__name__)
         logger.info("Start predicting process")
 

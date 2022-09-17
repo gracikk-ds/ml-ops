@@ -57,6 +57,7 @@ stages:
       size: 13253
   train_the_model:
     cmd: python src/models/train_model.py --path_to_dataset data/processed/train.csv
+      --experiment_name mlflow
     deps:
     - path: data/processed/train.csv
       md5: 84808f9205454b9a4ec584f2786c6fc6
@@ -65,8 +66,8 @@ stages:
       md5: a3ea929944122f5e5e77779e822a4863
       size: 86
     - path: src/models/train_model.py
-      md5: 1541e632b9d05fe25f21e8027bfd3f33
-      size: 4844
+      md5: 134bc998138839c9428703366eceb1d6
+      size: 4973
     params:
       params.yaml:
         train.C:
@@ -77,25 +78,25 @@ stages:
         - l2
     outs:
     - path: reports/features_importance/shap_values.png
-      md5: 9b4d17032425a4d6be8bb4f0cef6cc3b
-      size: 104131
+      md5: c951ea5109455db55b41cc50b34d947c
+      size: 125730
   evaluation:
     cmd: python src/models/validate_model.py --path_to_dataset data/processed/test.csv
-      --path_to_metrics_storage reports/metrics
+      --path_to_metrics_storage reports/metrics --experiment_name mlflow
     deps:
     - path: data/processed/test.csv
       md5: 773eabb436f0ca08c3cac7ce1f03bc50
       size: 71299
     - path: reports/features_importance/shap_values.png
-      md5: 9b4d17032425a4d6be8bb4f0cef6cc3b
-      size: 104131
+      md5: c951ea5109455db55b41cc50b34d947c
+      size: 125730
     - path: src/models/validate_model.py
-      md5: c76fdae4d141c19903acde925f4d57be
-      size: 3527
+      md5: 3c63276428fb61eae78c4c6222de43e6
+      size: 3709
     outs:
     - path: reports/metrics/metrics.json
-      md5: f2faaa2c195cd5b107a4652e4670a4cb
+      md5: 1059351c751d5d624b58e6f5a62b3854
       size: 105
     - path: reports/metrics/plots.json
-      md5: 1c28b87265f8e9e77b89283acf8158bf
-      size: 4121
+      md5: 808eccd3b998a0030c279341759c17d8
+      size: 4155

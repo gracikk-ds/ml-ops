@@ -18,20 +18,15 @@ spec:
         - image: grac20101/aleksandr-gordeev:latest
           name: service
           env:
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: inference-config
-                  key: AWS_ACCESS_KEY_ID
-            - name: AWS_SECRET_ACCESS_KEY
+            - name: MLFLOW_TRACKING_URI
+              value: https://dagshub.com/gracikk-ds/ml-ops.mlflow
+            - name: MLFLOW_TRACKING_USERNAME
+              value: gracikk-ds
+            - name: MLFLOW_TRACKING_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: inference-secret
-                  key: AWS_SECRET_ACCESS_KEY
-            - name: MLFLOW_S3_ENDPOINT_URL
-              value: http://127.0.0.1:30090
-            - name: MLFLOW_TRACKING_URI
-              value: http://127.0.0.1:30501
+                  key: MLFLOW_TRACKING_PASSWORD
           ports:
             - containerPort: 8090
 ---

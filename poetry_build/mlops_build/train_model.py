@@ -106,7 +106,7 @@ def main(
         )
 
         study = optuna.create_study(direction="maximize")
-        study.optimize(obj_partial, n_trials=200)
+        study.optimize(obj_partial, n_trials=50)
 
         # find the best run, log its metrics as the final metrics of this run.
         client = MlflowClient()

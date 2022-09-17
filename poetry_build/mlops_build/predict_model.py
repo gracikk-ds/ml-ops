@@ -9,7 +9,7 @@ from mlflow.tracking.client import MlflowClient
 def main(
     path_to_dataset: str,
     path_to_predictions_storage: str,
-    registered_model_name,
+    registered_model_name: str,
     dagshub_mlflow_tracking_uri: str,
     mlflow_tracking_username: str,
     mlflow_tracking_password: str,
@@ -19,7 +19,7 @@ def main(
     Args:
         path_to_dataset: absolute path to your dataset
         path_to_predictions_storage: absolute path to your predictions storage
-        registered_model_name: the name of th model in mlflow model's registry
+        registered_model_name: the name of the model in mlflow model's registry
         dagshub_mlflow_tracking_uri: path to mlflow uri provided by dags hub
         mlflow_tracking_username: dags hub username
         mlflow_tracking_password: dags hub token

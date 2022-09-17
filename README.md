@@ -25,8 +25,8 @@ The tasks of the project could be divided into 4 main parts:
 **Part 1 - Data Governance:**
 * Make an initial setup using `Data version control` tool and add a dataset, so another could obtain it via `dvc pull` Solved :white_check_mark:
 * Define a DVC pipeline that will:
-  * preprocess data Solved :white_check_mark:
-  * train a model Solved :white_check_mark:
+  * preprocess data [Solved :white_check_mark:]
+  * train a model [Solved :white_check_mark:]
   * evaluate the model Solved :white_check_mark:
   * generate a feature importance plot with a model agnostic method Solved :white_check_mark:
 * The pipeline should be reproducible using `dvc repro` Solved :white_check_mark:

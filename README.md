@@ -47,18 +47,18 @@ Skills of a machine learning engineer:
 * Create and run tests :white_check_mark:
 * Publish your package at pypi :white_check_mark:
 -----
-**Part 6 - ETL pipeline:**
-* Create an ETL pipeline as an Airflow dag
-* Besides Pandas use Pyspark for data manipulation
+**Part 6 - ETL pipeline (link)[https://github.com/gracikk-ds/airflow/blob/main/dags/etl.py] :**
+* Create an ETL pipeline as an Airflow dag :white_check_mark:
+* Besides Pandas use Pyspark for data manipulation :white_check_mark:
 -----
-**Part 7 - Batch mode model deployment:**
-* Create a pipeline for model training:
-  * use the output from Part 6 as an input
-  * define a logic for retraining
-  * define a logic for model versioning
-* Create a pipeline for model serving
-  * use an output from Part 6 as an input
-  * use a model from the model training pipeline as an input
+**Part 7 - Batch mode model deployment: **
+* Create a pipeline for model training (link)[https://github.com/gracikk-ds/airflow/blob/main/dags/train.py]:
+  * use the output from Part 6 as an input :white_check_mark:
+  * define a logic for retraining :white_check_mark:
+  * define a logic for model versioning :white_check_mark:
+* Create a pipeline for model serving (link)[https://github.com/gracikk-ds/airflow/blob/main/dags/predict.py]:
+  * use an output from Part 6 as an input :white_check_mark:
+  * use a model from the model training pipeline as an input :white_check_mark:
 -----
 
 ```bash

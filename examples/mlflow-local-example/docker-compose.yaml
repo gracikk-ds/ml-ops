@@ -88,10 +88,24 @@ services:
     networks:
       - s3
     environment:
+      - MLFLOW_S3_ENDPOINT_URL=http://nginx:9000
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     command: /bin/bash
+
+  service:
+    image: service
+    container_name: service
+    networks:
+      - s3
+    environment:
+      - MLFLOW_S3_ENDPOINT_URL=http://nginx:9000
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8080:80"
 
 networks:
   s3:

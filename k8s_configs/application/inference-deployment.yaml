@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference-deployment
+  labels:
+    app: inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inference
+  template:
+    metadata:
+      labels:
+        app: inference
+    spec:
+      containers:
+        - image: grac20101/aleksandr-gordeev:latest
+          name: service
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: https://dagshub.com/gracikk-ds/ml-ops.mlflow
+            - name: MLFLOW_TRACKING_USERNAME
+              value: gracikk-ds
+            - name: MLFLOW_TRACKING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: inference-secret
+                  key: MLFLOW_TRACKING_PASSWORD
+          ports:
+            - containerPort: 8090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inference-service
+  labels:
+    app: inference
+spec:
+  selector:
+    app: inference
+  type: NodePort
+  ports:
+    - port: 8081
+      targetPort: 8090
+      nodePort: 30081
+

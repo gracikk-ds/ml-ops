@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlflow-config
+data:
+  AWS_ACCESS_KEY_ID: minioadmin
+  MLFLOW_S3_ENDPOINT_URL: http://127.0.0.1:30090
+  POSTGRES_DB: mlflow_db
+  AWS_S3_BUCKET: ml-ops

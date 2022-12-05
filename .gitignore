@@ -12,7 +12,6 @@ docker/postgres/
 # Distribution / packaging
 .Python
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -60,8 +59,6 @@ docs/_build/
 # PyBuilder
 target/
 
-# DotEnv configuration
-.env
 
 # Database
 *.db

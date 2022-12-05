@@ -96,6 +96,7 @@ jobs:
       - name: If needed, commit black changes to the pull request.
         if: ${{ failure() }}
         run: |
+          source .venv/bin/activate
           black .
           git config --global user.name 'autoblack'
           git config --global user.email 'cclauss@users.noreply.github.com'

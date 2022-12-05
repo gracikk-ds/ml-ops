@@ -1,5 +1,9 @@
 from src.models.train_model import main
 from click.testing import CliRunner
+from dotenv import load_dotenv
+
+# load env variables
+load_dotenv()
 
 # Initialize runner
 гunner = CliRunner()

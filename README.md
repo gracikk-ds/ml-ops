@@ -40,7 +40,7 @@ Skills of a machine learning engineer:
 * Prepare model for deployment :white_check_mark:
 * Use FastAPI for the deployment :white_check_mark:
 * Wrap everything into Docker :white_check_mark: 
-* Also prepare the service for cluster deployment :white_check_mark:
+* Also prepare the service for cluster deployment ❌
 -----
 **Part 5 - Python packaging:**
 * Prepare python code for packaging :white_check_mark:
